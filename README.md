@@ -10,6 +10,9 @@ The conjecture asks whether two non-isomorphic trees can have the same chromatic
 | Proper trees | 212,723 distinct trees across three families. Use weights in `{2,3,4}` with total at least 30 on cores of order eight and nine, and the multiset `2,2,2,3,3,3,4,4,4,4` on cores of order ten. |
 | Equal-size subtree exchanges | 128 tree instances across six neighborhoods on 34, 58, and 70 vertices, including the starting trees. No pair of non-isomorphic trees passed the degree and two-cut filter. |
 | Two pendant-edge relocations | 7,055 isomorphism classes around the left 34-vertex tree and 20,342 around the right. Of the cross-neighborhood pairs, 2,594 passed the degree and two-cut filter. All differed by the exact forest-partition test through seven components. |
+| Root exchanges | A reconstruction argument rules out exchanges with different endpoint trees. The remaining cases use identical rooted endpoint trees within each component. [Proof and exact search](ROOT-EXCHANGE.md) |
+| Root exchanges across component orders | 3,725,021 root-pair signatures on sampled components of orders 12–22. No matching signed differences. [Run log](unequal-splits.jsonl) |
+| Matching endpoint trees | 10,477,944 root-pair trials on sampled components of orders 12–26, including 1,539,891 fingerprints compared after filtering. No matching signed differences. [Run log](matching-fringes.jsonl) |
 
 For a proper tree, discard all terms whose component-size partition contains a (1). The remaining forests contain every edge incident to a leaf. Contract those leaf edges and give the surviving vertex the size of its contracted group. This is the weighted core projection used in `proper_core.py`.
 
@@ -27,6 +30,9 @@ python near_collisions.py 1 3 --exchange
 python near_collisions.py 2 3 --exchange
 python near_collisions.py 1 2 --leaf-distance 2
 python balanced_splits.py
+python balanced_splits.py --min-order 12 --max-order 22 --random-count 3000 --seed 20261205 --across-orders
+python balanced_splits.py --min-order 12 --max-order 26 --random-count 4500 --seed 20261207 --matching-fringes
+python fringe_completions.py --min-order 8 --max-order 22 --random-count 2100 --seed 20261208 --prune-automorphisms
 python proper_core.py --core 8 --min-order 30 --max-weight 4
 python proper_core.py --core 9 --min-order 30 --max-weight 4
 python proper_core.py --core 10 --min-order 31 --weights 2,2,2,3,3,3,4,4,4,4
