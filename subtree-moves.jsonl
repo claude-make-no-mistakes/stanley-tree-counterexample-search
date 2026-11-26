@@ -1,0 +1,3 @@
+{"n": 34, "k": 1, "l": 2, "left_variants": 331, "right_variants": 648, "moves": "subtree", "truncated_comparisons": 94, "full_comparisons": 0, "witness_adjacencies": null}
+{"n": 46, "k": 2, "l": 2, "left_variants": 381, "right_variants": 629, "moves": "subtree", "truncated_comparisons": 84, "full_comparisons": 0, "witness_adjacencies": null}
+{"n": 58, "k": 1, "l": 3, "left_variants": 1426, "right_variants": 2064, "moves": "subtree", "truncated_comparisons": 220, "full_comparisons": 0, "witness_adjacencies": null}

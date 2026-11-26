@@ -1,0 +1,1 @@
+{"core_order": 10, "minimum_full_order": 31, "max_weight": 4, "weight_multiset": [2, 2, 2, 3, 3, 3, 4, 4, 4, 4], "counts": {"proper_trees": 151868, "three_filters_survived": 190}, "witness": null}

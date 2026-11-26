@@ -1,0 +1,4 @@
+{"n": 33, "restricted_u_index": 5, "left_prunings": 8, "right_prunings": 12, "distinct_trees_compared": 12, "restricted_collision_graph6": null}
+{"n": 32, "restricted_u_index": 5, "left_prunings": 37, "right_prunings": 71, "distinct_trees_compared": 43, "restricted_collision_graph6": null}
+{"n": 31, "restricted_u_index": 5, "left_prunings": 123, "right_prunings": 280, "distinct_trees_compared": 114, "restricted_collision_graph6": null}
+{"n": 30, "restricted_u_index": 5, "left_prunings": 323, "right_prunings": 827, "distinct_trees_compared": 322, "restricted_collision_graph6": null}
