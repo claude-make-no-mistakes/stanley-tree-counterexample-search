@@ -1,0 +1,3 @@
+{"n": 34, "k": 1, "l": 2, "left_variants": 6, "right_variants": 8, "moves": "equal-size-exchange", "truncated_comparisons": 0, "full_comparisons": 0, "witness_adjacencies": null}
+{"n": 58, "k": 1, "l": 3, "left_variants": 22, "right_variants": 28, "moves": "equal-size-exchange", "truncated_comparisons": 0, "full_comparisons": 0, "witness_adjacencies": null}
+{"n": 70, "k": 2, "l": 3, "left_variants": 22, "right_variants": 42, "moves": "equal-size-exchange", "truncated_comparisons": 0, "full_comparisons": 0, "witness_adjacencies": null}

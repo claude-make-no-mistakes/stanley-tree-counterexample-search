@@ -1,4 +1,4 @@
-"""Try one-edge subtree relocations around the near collisions of arXiv:2002.08186."""
+"""Search local subtree changes around the near collisions of arXiv:2002.08186."""
 
 import argparse
 from collections import Counter, defaultdict
@@ -87,6 +87,40 @@ def variants(source, subtree=False):
             source.add_edge(detached, old)
 
 
+def equal_size_exchanges(source):
+    """Swap disjoint pendant trees with equal order at two distinct attachment vertices."""
+    graph = nx.convert_node_labels_to_integers(source)
+    base = adjacency(graph)
+    weights = (1,) * len(graph)
+    seen = {rooted_code(base, weights)}
+    yield base
+
+    by_size = defaultdict(list)
+    for u, v in graph.edges():
+        for root, parent in ((u, v), (v, u)):
+            component = set()
+            pending = [(root, parent)]
+            while pending:
+                vertex, previous = pending.pop()
+                component.add(vertex)
+                pending.extend((child, vertex) for child in graph[vertex] if child != previous)
+            by_size[len(component)].append((root, parent, component))
+
+    for branches in by_size.values():
+        for (a, pa, left), (b, pb, right) in combinations(branches, 2):
+            if pa == pb or not left.isdisjoint(right) or pa in right or pb in left:
+                continue
+            graph.remove_edges_from(((a, pa), (b, pb)))
+            graph.add_edges_from(((a, pb), (b, pa)))
+            trial = adjacency(graph)
+            graph.remove_edges_from(((a, pb), (b, pa)))
+            graph.add_edges_from(((a, pa), (b, pb)))
+            code = rooted_code(trial, weights)
+            if code not in seen:
+                seen.add(code)
+                yield trial
+
+
 def signature(tree, cap=None):
     labels = {v: i for i, v in enumerate(u for u, neighbors in enumerate(tree) if len(neighbors) > 1)}
     core = tuple(tuple(labels[v] for v in tree[u] if v in labels) for u in labels)
@@ -94,7 +128,7 @@ def signature(tree, cap=None):
     return forest_signature(core, weights, max_components=cap)
 
 
-def scan(k, l, subtree=False):
+def scan(k, l, subtree=False, exchange=False):
     y, z = near_pair(k, l)
     n = len(y)
     # Theorem 12's first differing component count is k+l+4.
@@ -104,13 +138,15 @@ def scan(k, l, subtree=False):
     left, right = (signature(tree, cap) for tree in (left_base, right_base))
     assert min(len(p) for p in left.keys() | right.keys() if left[p] != right[p]) == cap
     groups = defaultdict(list)
-    for tree in variants(y, subtree=subtree):
+    left_variants = equal_size_exchanges(y) if exchange else variants(y, subtree=subtree)
+    right_variants = equal_size_exchanges(z) if exchange else variants(z, subtree=subtree)
+    for tree in left_variants:
         groups[degree_and_cuts(tree)].append((rooted_code(tree, ones), tree))
 
     full_checks = 0
     truncated_checks = 0
     right_count = 0
-    for tree in variants(z, subtree=subtree):
+    for tree in right_variants:
         right_count += 1
         code = rooted_code(tree, ones)
         candidates = [other for left_code, other in groups.get(degree_and_cuts(tree), ()) if left_code != code]
@@ -125,8 +161,9 @@ def scan(k, l, subtree=False):
                 full_checks += 1
                 if full == signature(other):
                     return {"n": n, "witness_adjacencies": [tree, other]}
+    move = "equal-size-exchange" if exchange else ("subtree" if subtree else "pendant")
     return {"n": n, "k": k, "l": l, "left_variants": sum(map(len, groups.values())),
-            "right_variants": right_count, "moves": "subtree" if subtree else "pendant",
+            "right_variants": right_count, "moves": move,
             "truncated_comparisons": truncated_checks, "full_comparisons": full_checks, "witness_adjacencies": None}
 
 
@@ -134,6 +171,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("k", type=int, choices=range(4))
     parser.add_argument("l", type=int, choices=range(4))
-    parser.add_argument("--subtree", action="store_true")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--subtree", action="store_true")
+    mode.add_argument("--exchange", action="store_true")
     args = parser.parse_args()
-    print(json.dumps(scan(args.k, args.l, subtree=args.subtree)))
+    print(json.dumps(scan(args.k, args.l, subtree=args.subtree, exchange=args.exchange)))
