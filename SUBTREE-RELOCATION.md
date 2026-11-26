@@ -59,4 +59,4 @@ A cut with that detached order in $B$ contributes the opposite. Hence equality r
 
 For positive $k$, the equality $Q_k=0$ implies $d_t+d_{a+k-t}=0$, including an integral midpoint by comparing coefficients. Along with $d_t=-d_{a-t}$ this makes $d$ periodic with period $k$. Its finite support gives $d=0$. Thus the endpoint pieces have identical detached-order multisets.
 
-The profile replay finds that no tree of order at most thirteen has distinct root orbits with both the same $P$ and the same detached-order multiset. It finds one repeated pair at order fourteen. Together with $b,c\geq6$, this gives a computer-assisted bound of $2\cdot14+6+6=40$ on a smallest Stanley collision obtained by a distance-two slide. [Replay log](rooted-profiles.jsonl)
+The profile replay finds that no tree of order at most thirteen has distinct root orbits with both the same $P$ and the same detached-order multiset. It finds one repeated pair at order fourteen (on `MpCS?D??G?_@?GO??`). Together with $b,c\geq6$, this gives a computer-assisted bound of $2\cdot14+6+6=40$ on a smallest Stanley collision obtained by a distance-two slide. [Replay log](rooted-profiles.jsonl)

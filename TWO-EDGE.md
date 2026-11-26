@@ -33,5 +33,5 @@ Two-edge term-by-term isomorphism cannot produce a Stanley counterexample, regar
 The exact search enumerated 3,302,297 attachment arrangements on three copies of each unlabeled tree of orders 2–12. It found 2,981,858 distinct expansions and no matching expansion on non-isomorphic joined trees. The two joining edges are the only edges that split off a component of one copy's order. An internal cut in an outer copy leaves a smaller component, and an internal cut of the central copy either leaves a smaller component or puts more than a full copy on each side. Thus the source isomorphism test may use the central path and the two rooted outer components, up to reversal of the path. A separate implementation using direct graph deletion and weighted contraction matched the counts for all 2,484 unfiltered attachments at component orders 2–5. [Search log](two-edge-repeats.jsonl)
 
 ```sh
-python two_edge_repeats.py --max-order 12
+python3 two_edge_repeats.py --max-order 12
 ```
