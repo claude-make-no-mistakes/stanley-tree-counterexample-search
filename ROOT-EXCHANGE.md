@@ -1,4 +1,6 @@
-# When a root exchange can change the tree
+# A tree is determined by its deletion and marked contraction at one edge
+
+**Theorem.** Let $e$ and $e'$ be edges of finite trees $S$ and $S'$. If $S-e\cong S'-e'$ and $S/e\cong S'/e'$ by an isomorphism preserving the contracted vertex, then there is an isomorphism $S\cong S'$ carrying $e$ to $e'$. In particular, exchanging the roots of two components while preserving their rooted contraction cannot produce a Stanley counterexample.
 
 One way to seek a Stanley collision is to join the same two components at different roots. For a tree $T$, let $B_T(v)$ be the multiset of rooted branches hanging from $v$. Each branch is rooted at a neighbor of $v$. Treat the multiset as a vector indexed by rooted tree isomorphism classes.
 
@@ -8,13 +10,17 @@ $$
 D=B_T(a)-B_T(b)=B_{T'}(c)-B_{T'}(d).
 $$
 
-The root of the contraction has weight two. The weighted chromatic deletion–contraction formula then gives equal chromatic symmetric functions of the joined trees. This construction allows unequal component orders. [Weighted deletion and contraction](https://arxiv.org/abs/1910.11859)
+The root of the contraction has weight two. The weighted deletion–contraction formula of Crew and Spirkl then gives equal chromatic symmetric functions of the joined trees. The construction allows unequal component orders. [Crew and Spirkl](https://arxiv.org/abs/1910.11859)
+
+Conversely, identify the two deletion forests by an isomorphism. Label the two components $T,T'$ and denote their attachment vertices by $a,d$ in the first tree and $b,c$ in the second. An isomorphism of the marked contractions identifies the union of the two branch bags, which gives exactly the displayed difference equation. The isomorphisms below carry the component roots to their counterparts and therefore preserve the joining edge.
+
+The mark is necessary. Removing a leaf edge from either the four-vertex path or the four-vertex star gives a three-vertex path and an isolated vertex. Contracting either edge gives a three-vertex path, with the merged vertex at an end for the path and in the middle for the star. For related reconstruction results based on interchanging branches within a tree, see [Krasikov](https://doi.org/10.1007/BF01788141).
 
 If $D=0$, adjoining a root to the common branch bag shows that the two roots in each component lie in the same orbit. The joined trees are isomorphic. For nonzero $D$, the following result excludes every exchange in which either component has different rooted trees at the two ends of its marked path, in the sense defined below.
 
 ## The part of the difference that determines the component
 
-Write the path from $a$ to $b$ as $x_0,dots,x_d$. For each path edge $x_i x_{i+1}$, let $L_i$ and $R_i$ be the two sides after deletion, rooted at $x_i$ and $x_{i+1}$ respectively. Put $A=L_0$ and $C=R_{d-1}$. These are the endpoint trees obtained by removing the first edge in the direction of the other endpoint.
+Write the path from $a$ to $b$ as $x_0,\ldots,x_d$. For each path edge $x_i x_{i+1}$, let $L_i$ and $R_i$ be the two sides after deletion, rooted at $x_i$ and $x_{i+1}$ respectively. Put $A=L_0$ and $C=R_{d-1}$. These are the endpoint trees obtained by removing the first edge in the direction of the other endpoint.
 
 For a rooted tree $U$, let $F([U])$ be the sum of its rooted descendant subtrees, one for each vertex and including $U$ itself. Extend $F$ linearly. Making $a$ the root of $T$ assigns one downward branch to each edge. Making $b$ the root reverses exactly the path edges. Therefore
 
@@ -34,14 +40,42 @@ These three regimes are visible from the signs at the extreme sizes. In the firs
 
 Write the branch bags at $a,b$ as $B_T(a)=[R_0]+B_A(a)$ and $B_T(b)=[L_{d-1}]+B_C(b)$. If $A\cong C$, their off-path bags cancel and the nonzero difference has one positive and one negative unit, counting multiplicity. If $A\not\cong C$, the two path terms do not cancel one another, by the size comparison above. Neither can cancel against the opposite off-path bag, since each path term contains the entire opposite endpoint tree. The off-path bags themselves differ, so there is at least one additional signed unit in $D$. This detects the remaining case directly from the original difference.
 
-Consequently, if two components have the same nonzero $D$ and either has different rooted endpoint trees, the reconstruction applies to both. It gives pairwise rooted isomorphisms at the corresponding attachment vertices. Exchanging the two components then exhibits an isomorphism of the joined trees. Only a difference of the form $[U]-[V]$ can produce a non-isomorphic pair by this method. In that case the two rooted endpoint trees within each component are isomorphic, and the reconstruction above leaves open whether the joins can differ.
+Consequently, if two components have the same nonzero $D$ and either has different rooted endpoint trees, the reconstruction applies to both. It gives pairwise rooted isomorphisms at the corresponding attachment vertices. Exchanging the two components then exhibits an isomorphism of the joined trees. Only a difference of the form $[U]-[V]$ can produce a non-isomorphic pair by this method. In that case the two rooted endpoint trees within each component are isomorphic.
 
-An independent mathematical referee checked the alternating signs, the cancellation test at equal sizes, and the isomorphism argument. The resulting search uses `--matching-fringes` to compare only the remaining differences across both equal and unequal component orders.
+An independent mathematical referee checked the alternating signs, the cancellation test at equal sizes, and the isomorphism argument.
 
-## Constructing all completions of one positive branch
+## Equal-order joins are isomorphic
+
+Write $U+A$ for the unrooted tree obtained by joining the roots of $U$ and $A$ by an edge. If a component has difference $[U]-[V]$ and identical rooted endpoint trees $A$, its unrooted type is both $U+A$ and $V+A$. A second component of the same order would give another rooted tree $B$ of the same order $|A|=|B|=k$. If $A\cong B$, the corresponding rooted attachment types of the two components agree. If $A\not\cong B$, the following lemma rules out the exchange.
+
+**Lemma.** Let $U,V$ be rooted trees of equal order $m>k$. If $U+A\cong V+A$ and $U+B\cong V+B$ for two distinct rooted tree types $A,B$ of order $k$, then $U\cong V$ as rooted trees.
+
+In a tree on more than $2k$ vertices, the sides of order $k$ obtained by cutting edges are pairwise disjoint. Indeed, root the tree at a centroid. Each such side avoids the centroid, so these sides are descendant subtrees of the same size. In $U+A$, the sides of order $k$ are the added copy of $A$ and the rooted descendant subtrees of $U$ of size $k$. Any other side containing the attached copy contains more than $k$ vertices. Compress each of the identified sides into a leaf labeled with its rooted type and mark all remaining vertices ordinary. Keep the added leaf blank. This produces a partially colored tree determined by $U$ and $k$, with one blank. Apply the same construction to $V$. The hypotheses give isomorphic completed colorings when both blanks receive label $A$, and when both receive label $B$.
+
+Two such completions at distinct colors determine the blank up to isomorphism. Root the two compressed trees canonically at their centers, subdividing the central edge and marking the inserted root if a center consists of an edge. Isomorphisms between each pair of completed colorings preserve these roots. At a blank root, the root label differs between the two completions. The other tree must also have a blank root, and all child types agree. Otherwise, take the difference between the child-type multisets of the completions in the order $A,B$. The only changing child is the one containing the blank. Its two completed types are distinct because their counts of color $A$ differ by one. Thus the signed difference identifies both completed types of that child, and all other child types agree between the two partially colored trees. Apply the same argument recursively to the two blank-containing children. This produces an isomorphism preserving the blanks.
+
+Delete the blank leaves, taking their neighbors as the roots, and expand the other labeled leaves. This recovers a rooted isomorphism $U\cong V$ and proves the lemma. For an endpoint tree $A$, the path branch $U$ includes the opposite copy of $A$ and at least one interior vertex, so $m>k$. A path of length one with identical endpoints gives zero difference. The lemma therefore applies to every nonzero equal-order exchange. In that case $U\cong V$ would force $D=0$.
+
+## The common difference determines the order in the two-term case
+
+Let $g(s)$ be the sum of the coefficients of $F(D)$ on rooted trees of order $s$. Each path edge supplies sides of complementary orders in $T$, so $g(s)=-g(|T|-s)$. If $g$ is nonzero, its smallest and largest supported orders sum to $|T|$. Thus a shared $D$ can come from different component orders only if $g$ vanishes everywhere.
+
+Suppose $g$ vanishes and $D=[U]-[V]\ne 0$. In one representation, write $W_1,\ldots,W_\ell$ for the rooted trees containing each interior path vertex and its branches off the path. Let $A$ be the common rooted endpoint tree. Rooted $U$ consists of the sequence $W_1,\ldots,W_\ell,A$, joined in order by edges between their roots and rooted at the first root. Rooted $V$ consists of $W_\ell,\ldots,W_1,A$ with the same convention. Set $m=|U|=|V|$ and $k=|A|$.
+
+The vanishing size totals make the sequence of orders $|W_1|,\ldots,|W_\ell|$ palindromic. Indeed, the sums of the orders along the path starting at either endpoint, before each path edge, are strictly increasing. The equation $g=0$ equates the two lists as multisets and hence in increasing order. Consecutive differences of the equal sums are the orders of the corresponding interior trees. In particular the first and last orders agree, say at $p$. There are at least two interior trees since $U\not\cong V$.
+
+The path child of the root in both $U$ and $V$ has order $m-p>m/2$, since $m\ge 2p+k$. Thus it is the unique child of order greater than $m/2$. The first and last rooted trees $P=W_1$ and $Q=W_\ell$ are determined by $U,V$ alone by removing those two child subtrees.
+
+If $P\not\cong Q$, the smallest order at which $F([U]-[V])$ is nonzero is $p+k$. In the rooted descendant sums, every subtree off the marked path contributes equally in both orders of the sequence, as does the entire endpoint tree $A$ with its descendants. The smallest surviving candidate terms are obtained by appending a child copy of $A$ to the roots of $Q$ and $P$. These two rooted trees have order $p+k$ and differ as rooted types, since removing one child of type $A$ recovers $Q$ and $P$. All other path descendants have larger order. Thus $p+k$ and $p$ are both determined by $U,V$, so $k$ is determined as well.
+
+If $P\cong Q$, take the unique large child in each of $U,V$ as the new pair. They are still nonisomorphic because adding the same root and off-path branches to them recovers $U,V$. They have the shorter interior sequence $W_2,\ldots,W_{\ell-1}$ and its reversal, with the new common endpoint tree obtained by adding $A$ as a child at the root of $P$. The shortened sequence still has palindromic orders. Its new endpoint order is $k+p$. This step is determined by $U,V$ and strictly decreases their common order. It must eventually reach distinct first and last trees, since nonisomorphic rooted pairs never have fewer than two interior trees in this representation. At that stage the endpoint order is determined. Subtracting the orders added at each earlier step recovers the original $k$ from $U,V$.
+
+Thus all representations of $D$ with $g=0$ have the same component order $m+k$. Together with the equal-order argument, this proves the theorem. A fresh referee checked the two-color reconstruction and the palindromic order reduction.
+
+The same proof gives an attachment statement. If $U,V$ are nonisomorphic rooted trees of the same order $m$, at most one rooted type $A$ satisfies $U+A\cong V+A$. For $|A|<m$, any such isomorphism must identify the two added copies of $A$ with distinct order-$|A|$ sides in the same tree, since identifying them with one another would give $U\cong V$ as rooted trees. The sides are disjoint, so they yield a representation of $[U]-[V]$ with identical endpoint trees. Its endpoint order is determined by the arguments above, and the equal-order lemma makes the endpoint type unique. If $|A|\ge m$, compare the rooted order-$m$ edge sides in $U+A$ and $V+A$. Apart from $U$ or $V$ itself, the order-$m$ sides are determined by $A$ alone. Equality would give $U\cong V$ as rooted trees, so no such $A$ exists in that range.
+
+## Computational search that led to the proof
 
 Fix the positive rooted branch $U$, with root $u$. For each vertex $b\ne u$, take the descendant subtree rooted at $b$ as the candidate endpoint tree $C$. Attach a new copy of $C$ to $u$ to obtain the full component $T$ with its new endpoint $a$. The negative branch $V$ can be obtained from $U$ by moving the original copy of $C$ from its parent to $u$, then making its former parent the root. This is exactly the branch obtained by deleting the original edge to $b$ in $T$. Every nonzero identical-endpoint difference with positive side $U$ arises in this way.
 
-The code compares all negative branches from the same rooted $U$. If two agree, it constructs the joins and checks isomorphism directly. When two endpoints in $U$ are in the same orbit under the fixed root, the corresponding completions give the same rooted data. If two candidate endpoint trees $C$ are themselves rooted-isomorphic, attaching them to the same $U$ gives the same rooted type at $a$. The equality of differences then also gives the same rooted type at $b$, so the resulting joins are isomorphic.
-
-There is a further restriction for unequal component orders. Let $g(s)$ be the sum of the coefficients of $F(D)$ on rooted trees of size $s$. Each path edge supplies sides of complementary sizes in $T$, so $g(s)=-g(|T|-s)$. If $g$ is nonzero, its smallest and largest supported sizes sum to $|T|$. A common difference can therefore span different component orders only if all the size totals $g(s)$ vanish.
+The completion search compares all negative branches from the same rooted $U$. When two candidates agree, it constructs both joins and checks them for isomorphism. Candidates in the same endpoint orbit under the fixed root can be represented by one endpoint.

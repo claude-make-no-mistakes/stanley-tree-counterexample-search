@@ -1,0 +1,14 @@
+{"order": 2, "trees": 1, "marked_edges": 1, "marked_keys": 1, "unmarked_tree_changes": 0, "unmarked_example": null}
+{"order": 3, "trees": 1, "marked_edges": 2, "marked_keys": 1, "unmarked_tree_changes": 0, "unmarked_example": null}
+{"order": 4, "trees": 2, "marked_edges": 6, "marked_keys": 3, "unmarked_tree_changes": 3, "unmarked_example": [["Cq", [0, 2]], ["Ci", [0, 1]]]}
+{"order": 5, "trees": 3, "marked_edges": 12, "marked_keys": 6, "unmarked_tree_changes": 6, "unmarked_example": [["DqC", [0, 2]], ["DqO", [1, 3]]]}
+{"order": 6, "trees": 6, "marked_edges": 30, "marked_keys": 16, "unmarked_tree_changes": 17, "unmarked_example": [["EpOG", [2, 3]], ["EsOG", [0, 2]]]}
+{"order": 7, "trees": 11, "marked_edges": 66, "marked_keys": 37, "unmarked_tree_changes": 36, "unmarked_example": [["FpOGG", [2, 3]], ["FpOGO", [4, 5]]]}
+{"order": 8, "trees": 23, "marked_edges": 161, "marked_keys": 96, "unmarked_tree_changes": 89, "unmarked_example": [["GpD?GC", [3, 4]], ["GpH?GC", [2, 3]]]}
+{"order": 9, "trees": 47, "marked_edges": 376, "marked_keys": 239, "unmarked_tree_changes": 200, "unmarked_example": [["HpD?GC@", [3, 4]], ["HpD?GCA", [6, 7]]]}
+{"order": 10, "trees": 106, "marked_edges": 954, "marked_keys": 622, "unmarked_tree_changes": 504, "unmarked_example": [["IpCI?C@?G", [4, 5]], ["IpCQ?C@?G", [3, 4]]]}
+{"order": 11, "trees": 235, "marked_edges": 2350, "marked_keys": 1607, "unmarked_tree_changes": 1211, "unmarked_example": [["JpCI?C@?G?_", [4, 5]], ["JpCI?C@?G@?", [8, 9]]]}
+{"order": 12, "trees": 551, "marked_edges": 6061, "marked_keys": 4235, "unmarked_tree_changes": 3095, "unmarked_example": [["KpCGI?@?G?_@", [5, 6]], ["KpCGQ?@?G?_@", [4, 5]]]}
+{"order": 13, "trees": 1301, "marked_edges": 15612, "marked_keys": 11185, "unmarked_tree_changes": 7804, "unmarked_example": [["LpCGI?@?G?_@?@", [5, 6]], ["LpCGI?@?G?_@?A", [10, 11]]]}
+{"order": 14, "trees": 3159, "marked_edges": 41067, "marked_keys": 29862, "unmarked_tree_changes": 20465, "unmarked_example": [["MpCGGD??G?_@?@??_", [6, 7]], ["MpCGGH??G?_@?@??_", [5, 6]]]}
+{"order": 15, "trees": 7741, "marked_edges": 108374, "marked_keys": 80070, "unmarked_tree_changes": 53080, "unmarked_example": [["NpCGGD??G?_@?@??_?G", [6, 7]], ["NpCGGD??G?_@?@??_?O", [12, 13]]]}

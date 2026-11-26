@@ -1,0 +1,11 @@
+{"component_order": 2, "trees": 1, "arrangements": 2, "expansions": 2, "candidate": null}
+{"component_order": 3, "trees": 1, "arrangements": 16, "expansions": 13, "candidate": null}
+{"component_order": 4, "trees": 2, "arrangements": 40, "expansions": 33, "candidate": null}
+{"component_order": 5, "trees": 3, "arrangements": 273, "expansions": 225, "candidate": null}
+{"component_order": 6, "trees": 6, "arrangements": 936, "expansions": 784, "candidate": null}
+{"component_order": 7, "trees": 11, "arrangements": 4391, "expansions": 3788, "candidate": null}
+{"component_order": 8, "trees": 23, "arrangements": 14914, "expansions": 12967, "candidate": null}
+{"component_order": 9, "trees": 47, "arrangements": 57480, "expansions": 50713, "candidate": null}
+{"component_order": 10, "trees": 106, "arrangements": 197367, "expansions": 175885, "candidate": null}
+{"component_order": 11, "trees": 235, "arrangements": 695497, "expansions": 625555, "candidate": null}
+{"component_order": 12, "trees": 551, "arrangements": 2331381, "expansions": 2111893, "candidate": null}
