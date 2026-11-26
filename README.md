@@ -9,6 +9,7 @@ The conjecture asks whether two non-isomorphic trees can have the same chromatic
 | Balanced joins | 1,211,612 pairs of root positions, on components of order 15–19. |
 | Proper trees | 212,723 distinct trees across three families. Use weights in `{2,3,4}` with total at least 30 on cores of order eight and nine, and the multiset `2,2,2,3,3,3,4,4,4,4` on cores of order ten. |
 | Equal-size subtree exchanges | 128 tree instances across six neighborhoods on 34, 58, and 70 vertices, including the starting trees. No pair of non-isomorphic trees passed the degree and two-cut filter. |
+| Two pendant-edge relocations | 7,055 isomorphism classes around the left 34-vertex tree and 20,342 around the right. Of the cross-neighborhood pairs, 2,594 passed the degree and two-cut filter. All differed by the exact forest-partition test through seven components. |
 
 For a proper tree, discard all terms whose component-size partition contains a (1). The remaining forests contain every edge incident to a leaf. Contract those leaf edges and give the surviving vertex the size of its contracted group. This is the weighted core projection used in `proper_core.py`.
 
@@ -24,6 +25,7 @@ python near_collisions.py 1 2 --subtree
 python near_collisions.py 1 2 --exchange
 python near_collisions.py 1 3 --exchange
 python near_collisions.py 2 3 --exchange
+python near_collisions.py 1 2 --leaf-distance 2
 python balanced_splits.py
 python proper_core.py --core 8 --min-order 30 --max-weight 4
 python proper_core.py --core 9 --min-order 30 --max-weight 4

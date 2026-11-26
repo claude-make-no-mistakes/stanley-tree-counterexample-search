@@ -121,6 +121,21 @@ def equal_size_exchanges(source):
                 yield trial
 
 
+def two_leaf_moves(source):
+    """Generate non-isomorphic trees within two pendant-edge relocations."""
+    first = list(variants(source))
+    weights = (1,) * len(source)
+    seen = {rooted_code(tree, weights) for tree in first}
+    yield from first
+    for tree in first[1:]:
+        graph = nx.Graph({v: list(row) for v, row in enumerate(tree)})
+        for trial in variants(graph):
+            code = rooted_code(trial, weights)
+            if code not in seen:
+                seen.add(code)
+                yield trial
+
+
 def signature(tree, cap=None):
     labels = {v: i for i, v in enumerate(u for u, neighbors in enumerate(tree) if len(neighbors) > 1)}
     core = tuple(tuple(labels[v] for v in tree[u] if v in labels) for u in labels)
@@ -128,7 +143,7 @@ def signature(tree, cap=None):
     return forest_signature(core, weights, max_components=cap)
 
 
-def scan(k, l, subtree=False, exchange=False):
+def scan(k, l, subtree=False, exchange=False, leaf_distance=1):
     y, z = near_pair(k, l)
     n = len(y)
     # Theorem 12's first differing component count is k+l+4.
@@ -138,15 +153,23 @@ def scan(k, l, subtree=False, exchange=False):
     left, right = (signature(tree, cap) for tree in (left_base, right_base))
     assert min(len(p) for p in left.keys() | right.keys() if left[p] != right[p]) == cap
     groups = defaultdict(list)
-    left_variants = equal_size_exchanges(y) if exchange else variants(y, subtree=subtree)
-    right_variants = equal_size_exchanges(z) if exchange else variants(z, subtree=subtree)
-    for tree in left_variants:
+    if exchange:
+        generate, move = equal_size_exchanges, "equal-size-exchange"
+    elif leaf_distance == 2:
+        generate, move = two_leaf_moves, "two-pendant-relocations"
+    else:
+        def generate(tree):
+            return variants(tree, subtree=subtree)
+
+        move = "subtree" if subtree else "pendant"
+
+    for tree in generate(y):
         groups[degree_and_cuts(tree)].append((rooted_code(tree, ones), tree))
 
     full_checks = 0
     truncated_checks = 0
     right_count = 0
-    for tree in right_variants:
+    for tree in generate(z):
         right_count += 1
         code = rooted_code(tree, ones)
         candidates = [other for left_code, other in groups.get(degree_and_cuts(tree), ()) if left_code != code]
@@ -161,7 +184,6 @@ def scan(k, l, subtree=False, exchange=False):
                 full_checks += 1
                 if full == signature(other):
                     return {"n": n, "witness_adjacencies": [tree, other]}
-    move = "equal-size-exchange" if exchange else ("subtree" if subtree else "pendant")
     return {"n": n, "k": k, "l": l, "left_variants": sum(map(len, groups.values())),
             "right_variants": right_count, "moves": move,
             "truncated_comparisons": truncated_checks, "full_comparisons": full_checks, "witness_adjacencies": None}
@@ -174,5 +196,7 @@ if __name__ == "__main__":
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--subtree", action="store_true")
     mode.add_argument("--exchange", action="store_true")
+    mode.add_argument("--leaf-distance", type=int, choices=(1, 2), default=1)
     args = parser.parse_args()
-    print(json.dumps(scan(args.k, args.l, subtree=args.subtree, exchange=args.exchange)))
+    result = scan(args.k, args.l, subtree=args.subtree, exchange=args.exchange, leaf_distance=args.leaf_distance)
+    print(json.dumps(result), flush=True)
