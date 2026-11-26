@@ -1,0 +1,9 @@
+{"order": 3, "trees": 1, "pairs": 1, "connected_triples": 0, "distinct_pair_data": 1, "distinct_triple_data": 0}
+{"order": 4, "trees": 2, "pairs": 6, "connected_triples": 2, "distinct_pair_data": 3, "distinct_triple_data": 2}
+{"order": 5, "trees": 3, "pairs": 18, "connected_triples": 9, "distinct_pair_data": 9, "distinct_triple_data": 4}
+{"order": 6, "trees": 6, "pairs": 60, "connected_triples": 35, "distinct_pair_data": 27, "distinct_triple_data": 14}
+{"order": 7, "trees": 11, "pairs": 165, "connected_triples": 99, "distinct_pair_data": 79, "distinct_triple_data": 38}
+{"order": 8, "trees": 23, "pairs": 483, "connected_triples": 287, "distinct_pair_data": 233, "distinct_triple_data": 113}
+{"order": 9, "trees": 47, "pairs": 1316, "connected_triples": 747, "distinct_pair_data": 679, "distinct_triple_data": 311}
+{"order": 10, "trees": 106, "pairs": 3816, "connected_triples": 2038, "distinct_pair_data": 1987, "distinct_triple_data": 884}
+{"order": 11, "trees": 235, "pairs": 10575, "connected_triples": 5302, "distinct_pair_data": 5784, "distinct_triple_data": 2446}

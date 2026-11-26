@@ -1,0 +1,14 @@
+{"order": 1, "rooted_types": 1, "distinct_profiles": 1, "same_tree_repeats": 0, "same_tree_two_profile_repeats": 0}
+{"order": 2, "rooted_types": 1, "distinct_profiles": 1, "same_tree_repeats": 0, "same_tree_two_profile_repeats": 0}
+{"order": 3, "rooted_types": 2, "distinct_profiles": 2, "same_tree_repeats": 0, "same_tree_two_profile_repeats": 0}
+{"order": 4, "rooted_types": 4, "distinct_profiles": 4, "same_tree_repeats": 0, "same_tree_two_profile_repeats": 0}
+{"order": 5, "rooted_types": 9, "distinct_profiles": 9, "same_tree_repeats": 0, "same_tree_two_profile_repeats": 0}
+{"order": 6, "rooted_types": 20, "distinct_profiles": 20, "same_tree_repeats": 0, "same_tree_two_profile_repeats": 0}
+{"order": 7, "rooted_types": 48, "distinct_profiles": 47, "same_tree_repeats": 0, "same_tree_two_profile_repeats": 0}
+{"order": 8, "rooted_types": 115, "distinct_profiles": 112, "same_tree_repeats": 0, "same_tree_two_profile_repeats": 0}
+{"order": 9, "rooted_types": 286, "distinct_profiles": 274, "same_tree_repeats": 0, "same_tree_two_profile_repeats": 0}
+{"order": 10, "rooted_types": 719, "distinct_profiles": 679, "same_tree_repeats": 0, "same_tree_two_profile_repeats": 0}
+{"order": 11, "rooted_types": 1842, "distinct_profiles": 1717, "same_tree_repeats": 1, "same_tree_two_profile_repeats": 0}
+{"order": 12, "rooted_types": 4766, "distinct_profiles": 4393, "same_tree_repeats": 0, "same_tree_two_profile_repeats": 0}
+{"order": 13, "rooted_types": 12486, "distinct_profiles": 11374, "same_tree_repeats": 2, "same_tree_two_profile_repeats": 0}
+{"order": 14, "rooted_types": 32973, "distinct_profiles": 29725, "same_tree_repeats": 4, "same_tree_two_profile_repeats": 1}

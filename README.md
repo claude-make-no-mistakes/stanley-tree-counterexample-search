@@ -4,7 +4,7 @@ The conjecture asks whether two non-isomorphic trees can have the same chromatic
 
 **A tree with a marked edge is determined by the forest after deleting that edge and the tree after contracting it, with the merged vertex marked.** The proof rules out the root-exchange construction for all component orders. The four-vertex path and star show that the mark on the contracted vertex is necessary. [Paper](edge-reconstruction.pdf) · [Proof](ROOT-EXCHANGE.md)
 
-For two-edge expansions, a term-by-term match can change the full tree only if the central component has the same unrooted type as an outer component. [Two-edge reduction](TWO-EDGE.md)
+The double contraction and the two rooted mixed components determine a tree with two specified edges. For three specified edges forming a connected subtree, the positive-contraction layers determine the tree and its marked edges. If equal copies are joined at one common vertex, a shared marked contraction rules out a smallest collision even with polynomial cancellation. A fixed graft cannot move across an adjacent edge in a smallest collision. Moving it across two edges requires at least 40 vertices by the proved endpoint tests and a finite enumeration. [Paper](contraction-reconstruction.pdf) · [Two-edge theorem](TWO-EDGE.md) · [Three-edge theorem](THREE-EDGE-CONNECTED.md) · [Common attachment](COMMON-HUB.md) · [Subtree relocation](SUBTREE-RELOCATION.md)
 
 | Search | Coverage |
 | --- | --- |
@@ -18,6 +18,9 @@ For two-edge expansions, a term-by-term match can change the full tree only if t
 | Root exchanges across component orders | 3,725,021 root-pair signatures on sampled components of orders 12–22. No matching signed differences. [Run log](unequal-splits.jsonl) |
 | Matching endpoint trees | 10,477,944 root-pair trials on sampled components of orders 12–26, including 1,539,891 fingerprints compared after filtering. No matching signed differences. [Run log](matching-fringes.jsonl) |
 | Edge reconstruction | Checked all 175,072 edge choices of the 13,187 unlabeled trees of orders 2–15. No two distinct marked-edge types shared both reconstruction data. [Run log](edge-reconstruction.jsonl) |
+| Multiple-edge reconstruction | Checked all 16,440 pairs and 8,519 connected triples of edges from the 434 unlabeled trees of orders 3–11. [Run log](multiple-edge-reconstruction.jsonl) |
+| Cancellation in three equal copies | At component orders 2–12, 313,000 pairs of non-isomorphic joins shared their marked double contraction. Of these, 2,917 agreed through three components, and none agreed through five. The two joins in each comparison have the same all-deleted forest. [Run log](two-edge-cancellations.jsonl) |
+| Balanced joins with polynomial comparisons | Checked 11,916,567 balanced joins within fixed pools of 200 components per order from 12 to 18. Of the 1,671,767 joins that repeated a degree and one-cut signature, none also matched both modular evaluations for its component pair. [Run log](balanced-polynomial-search.jsonl) |
 
 For a proper tree, discard all terms whose component-size partition contains a (1). The remaining forests contain every edge incident to a leaf. Contract those leaf edges and give the surviving vertex the size of its contracted group. This is the weighted core projection used in `proper_core.py`.
 
@@ -39,6 +42,11 @@ python balanced_splits.py --min-order 12 --max-order 22 --random-count 3000 --se
 python balanced_splits.py --min-order 12 --max-order 26 --random-count 4500 --seed 20261207 --matching-fringes
 python fringe_completions.py --min-order 8 --max-order 22 --random-count 2100 --seed 20261208 --prune-automorphisms
 python check_edge_reconstruction.py --max-order 15
+python check_multiple_edges.py --max-order 11
+python two_edge_repeats.py --max-order 12 --search-mixed-cancellation
+python balanced_polynomial_search.py --min-order 12 --max-order 18 --components 200 --seed 20261212
+python check_rooted_profiles.py --max-order 14
+tectonic contraction-reconstruction.tex
 python proper_core.py --core 8 --min-order 30 --max-weight 4
 python proper_core.py --core 9 --min-order 30 --max-weight 4
 python proper_core.py --core 10 --min-order 31 --weights 2,2,2,3,3,3,4,4,4,4
