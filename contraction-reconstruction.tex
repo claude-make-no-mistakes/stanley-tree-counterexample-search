@@ -1,156 +1,271 @@
 \documentclass[10pt]{article}
-\usepackage[letterpaper,hmargin=0.85in,vmargin=0.72in]{geometry}
+\usepackage[letterpaper,hmargin=0.9in,vmargin=0.8in]{geometry}
 \usepackage[T1]{fontenc}
-\usepackage{amsmath,amssymb,lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,lmodern,microtype}
 \usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+
 \setlength{\emergencystretch}{1em}
+
 \title{Tree reconstruction from edge contractions\\ and restrictions on subtree relocation}
 \author{}
 \date{}
+
 \begin{document}
 \maketitle
 \vspace{-2.5em}
+
 \begin{abstract}
-The double contraction and two rooted mixed components reconstruct a tree with two specified edges. The positive-contraction layers also reconstruct three specified edges forming a connected subtree. We exclude a smallest chromatic symmetric function collision between joins of equal copies at a common attachment point with the same fully contracted tree. For a fixed graft relocated across two edges, a smallest collision requires at least 40 vertices, using exact enumeration for one endpoint bound. We report two finite searches for polynomial coincidences.
+We prove that the double contraction and the unordered pair of rooted weight-two mixed components reconstruct a finite tree together with two specified edges, and that the positive-contraction layers reconstruct three specified edges forming a connected subtree. We show that joining copies of a tree at a common attachment point with isomorphic marked contractions cannot yield an order-minimal counterexample to Stanley's tree conjecture, even with polynomial cancellation. For a fixed rooted graft relocated across one edge, an order-minimal counterexample is impossible; across two edges, we prove that both the middle piece and the graft have order at least~$6$ and that the endpoint pieces share both their connected-subtree profiles and their detached-order multisets, giving a computer-assisted lower bound of $40$ vertices. We also report finite verification and polynomial-coincidence searches.
 \end{abstract}
+
 \section{Reconstructing a tree from two-edge contractions}
 
-Let $S$ be a tree with two specified edges. Deleting both gives three components. Call the component incident to both removed edges $T$ and the other two components outer. The two-edge expansion of the chromatic symmetric function consists of the all-deleted forest, the two forests given by deleting one edge and contracting the other, and the tree given by contracting both edges. Contracting adds vertex weights, and original vertices have weight one. \href{https://arxiv.org/abs/1910.11859}{Weighted deletion and contraction}
+Let $S$ be a finite tree with two specified edges. Deleting both edges leaves three components: a unique central component $T$ incident to both removed edges, and two outer components. In the weighted deletion--contraction expansion of the chromatic symmetric function~\cite{crew-spirkl}, contracting an edge adds the weights of its endpoints, with all original vertices starting at weight~$1$. The two-edge expansion consists of the all-deleted forest, two mixed forests (each obtained by deleting one specified edge and contracting the other), and the double-contracted tree.
 
-\textbf{Theorem.} The double contraction and the unordered pair of rooted weight-two components from the mixed terms determine the tree and its unordered pair of specified edges. Each mixed component is rooted at its unique vertex of weight two. The isolated components of the mixed terms and the all-deleted forest can be discarded.
+\begin{theorem}\label{thm:two-edge}
+Let $S$ be a finite tree with two specified edges. The double contraction and the unordered pair of rooted weight-two components from the two mixed terms (each rooted at its unique vertex of weight~$2$) determine $S$ and its unordered pair of specified edges up to isomorphism. The isolated components of the mixed terms and the all-deleted forest are not needed.
+\end{theorem}
 
-For a vertex, its branch bag is the multiset of rooted components obtained by removing it, with roots at its former neighbors. The branch bag determines the rooted tree. Add and subtract bags in the free abelian group on rooted tree types, writing $[U]$ for one copy of type $U$.
+For a vertex $v$ of a tree, its \emph{branch bag} is the multiset of rooted isomorphism types of the components obtained by deleting $v$, each rooted at its former neighbor of $v$. A rooted tree is determined by the branch bag at its root. We add and subtract branch bags in the free abelian group on rooted tree isomorphism classes, writing $[U]$ for a single copy of a rooted type~$U$.
 
-\subsection{A common attachment point}
+\begin{proof}
+The double contraction distinguishes whether the two specified edges share an endpoint: they share an endpoint if and only if the double contraction has a single vertex of weight~$3$, and otherwise it has exactly two vertices of weight~$2$.
 
-If the attachment points coincide, the double contraction has a single mark of weight three. Let $H$ be its branch bag and let $M_1,M_2$ be the two mixed bags. Writing $C,A_1,A_2$ for the central and outer attachment bags gives $H=C+A_1+A_2$ and $M_i=C+A_i$. Thus $C=M_1+M_2-H$ and $A_i=M_i-C$. These rooted types recover the original joins.
+\medskip
+\noindent\emph{Case 1: A common attachment point.}
+Let $H$ be the branch bag at the unique weight-$3$ vertex of the double contraction, and let $M_1,M_2$ be the root branch bags of the two mixed weight-$2$ components. Writing $C$ for the branch bag of the central component at the common attachment vertex and $A_1,A_2$ for the branch bags of the two outer components at their attachment roots, we have $H = C+A_1+A_2$ and $M_i = C+A_i$ for $i=1,2$. Therefore
+\[
+C = M_1 + M_2 - H \qquad\text{and}\qquad \{A_1,A_2\} = \{M_1-C,\, M_2-C\}.
+\]
+These rooted types uniquely reconstruct $S$ and its unordered pair of specified edges.
 
-\subsection{Two distinct attachment points}
+\medskip
+\noindent\emph{Case 2: Two distinct attachment points.}
+Align two candidate trees $S$ and $S'$ by a weight-preserving isomorphism of their double contractions, and label the two weight-$2$ vertices $1$ and $2$ in the common double contraction. Deleting the edges of the unique path between $1$ and $2$ leaves $k\ge 0$ rooted interior pieces $W_1,\ldots,W_k$ in order along the path, identical in both candidates. Let $H_i$ ($i\in\{1,2\}$) be the known off-path branch bag at vertex~$i$ in the double contraction; it equals the sum of the central off-path branch bag at endpoint~$i$ and the attachment branch bag of the outer component attached there.
 
-Otherwise the double contraction has two marks of weight two. Align two candidate double contractions by a weight-preserving isomorphism and number the marks $1,2$. On removing edges of the path between them, write $W_1,\ldots,W_k$ for the rooted pieces at its interior vertices in order. These pieces are the same in both candidates with the same orientation. Let $H_i$ be the known off-path bag at mark $i$ in the double contraction. It is the sum of the central endpoint off-path bag and the bag of the outer component attached there.
+For $S$, let $E_1,E_2$ be the rooted off-path pieces at endpoints $1,2$ of the central component (rooted at $1,2$, with branch bags $B_{E_1},B_{E_2}$), and write $U_1 := (W_1,\ldots,W_k,E_2)$ and $U_2 := (W_k,\ldots,W_1,E_1)$ for the inward rooted branches from endpoints $1$ and $2$ along the path. Here a chain $(X_1,\ldots,X_r)$ joins consecutive roots by edges and is rooted at the root of $X_1$; when $k=0$, $U_1=E_2$ and $U_2=E_1$. The mixed root bag at endpoint~$i$ is $M_i = H_i + [U_i]$. Use primes for the second candidate $S'$ while retaining the same $H_i$ and $W_j$.
 
-Let $E_1,E_2$ be the rooted off-path pieces at the endpoints of the central component. Write $U_i$ for its inward rooted branch from endpoint $i$. The two inward branches are the chains $W_1,\ldots,W_k,E_2$ and $W_k,\ldots,W_1,E_1$, respectively. A chain joins the roots of consecutive pieces and is rooted at the first root. The mixed bag assigned to endpoint $i$ is $H_i+[U_i]$. Use primes for the second candidate while retaining the same $H_i$ and $W_j$.
+Since $\{M_1,M_2\}=\{M'_1,M'_2\}$, either the mixed bags align or they cross. If $U_i\cong U'_i$ for $i=1,2$ (which holds immediately in the aligned case $H_i+[U_i]=H_i+[U'_i]$), then cancelling the known off-path bags $B_{W_1},\ldots,B_{W_k}$ successively from the roots of $U_1\cong U'_1$ and $U_2\cong U'_2$ yields $E_2\cong E'_2$ and $E_1\cong E'_1$. Subtracting $B_{E_i}=B_{E'_i}$ from $H_i$ recovers the outer attachment bags $A_i=A'_i$, giving an isomorphism $S\cong S'$ preserving each specified edge.
 
-If the mixed bags align, $U_i\cong U'_i$ for each $i$. Cancel the common off-path bag at each successive interior root of the two chains. This recovers $E_i\cong E'_i$. Subtracting the branch bags of the endpoint pieces from $H_i$ recovers the outer components with their attachment roots. These rooted isomorphisms reconstruct the original tree and specified edge pair.
+Otherwise, the mixed bags cross: $H_1+[U_1]=H_2+[U'_2]$ and $H_2+[U_2]=H_1+[U'_1]$. Adding these two equations cancels $H_1+H_2$ and gives $[U_1]+[U_2]=[U'_1]+[U'_2]$. The case $U_i\cong U'_i$ was already resolved above (using only equality of the inward branches). Thus $U_1\cong U'_2$ and $U_2\cong U'_1$, and substituting into either crossed equation forces $H_1=H_2$.
 
-If the mixed bags cross, equality of their unordered pair gives $H_1+[U_1]=H_2+[U'_2]$ and $H_2+[U_2]=H_1+[U'_1]$. Adding gives equality of the multisets $\{U_1,U_2\}$ and $\{U'_1,U'_2\}$. The aligned possibility is covered by the preceding argument, which uses only equality of the inward branches. Otherwise $U_1\cong U'_2$ and $U_2\cong U'_1$. Moreover $H_1=H_2$ by either crossed equation.
+Compare the chains $U_1 = (W_1,\ldots,W_k,E_2)$ and $U'_2 = (W_k,\ldots,W_1,E'_1)$. If $k=0$, then $E_2\cong E'_1$ immediately; if $k=1$, cancelling $B_{W_1}$ at the root gives $E_2\cong E'_1$. For $k\ge 2$, while at least two unpaired interior pieces remain ($j < k+1-j$), the continuation child of the $j$-th root in $U_1$ contains $W_{k+1-j}$ together with the nonempty terminal piece $E_2$, so its order is at least $|W_{k+1-j}|+1$, which strictly exceeds the order of every off-path child of $W_{k+1-j}$. Hence any rooted isomorphism matches the continuation children, and cancelling them from the root bags forces $W_j\cong W_{k+1-j}$ and equality of the continuation chains. Proceeding inward pairs all mirrored interior pieces (and cancels a common middle piece when $k$ is odd). Once the remaining interior pieces agree in order, cancelling their known off-path bags recovers $E_2\cong E'_1$. The second isomorphism $U_2\cong U'_1$ similarly recovers $E_1\cong E'_2$.
 
-The isomorphism $U_1\cong U'_2$ compares the chains $W_1,\ldots,W_k,E_2$ and $W_k,\ldots,W_1,E'_1$. While at least two unpaired interior pieces remain, the continuation child in either chain contains the first piece of the other chain and a nonempty terminal piece. It is larger than every off-path child of the other root. Therefore the isomorphism matches the continuation children. Cancelling them in the root bags gives $W_1\cong W_k$, then $W_2\cong W_{k-1}$, and so forth. Cancel a common middle piece if the number of pieces is odd. The mirrored pieces now agree throughout both chains, so cancelling the remaining bags gives $E_2\cong E'_1$. The second inward isomorphism gives $E_1\cong E'_2$. If the marks are adjacent, there are no interior pieces and the endpoint types agree immediately under reversal.
+Thus the central components agree under reversal of the path between $1$ and $2$. Since $H_1=H_2$, subtracting $B_{E_1}=B_{E'_2}$ and $B_{E_2}=B_{E'_1}$ pairs the outer components under the same reversal, yielding an isomorphism $S\cong S'$ carrying the pair of specified edges to its counterpart.
+\end{proof}
 
-Thus the original central components agree under reversal, including their rooted endpoint pieces. Since $H_1=H_2$, subtracting those endpoint bags pairs the outer components under the same reversal. The resulting isomorphism carries the specified edges as a set.
-
-\subsection{Implication for counterexample searches}
-
-Two-edge term-by-term isomorphism cannot produce a Stanley counterexample, regardless of component types or sizes. If a pair has isomorphic all-deleted forests and double contractions, equality of chromatic symmetric functions is equivalent to equality of the sum of the two mixed chromatic symmetric functions. Any non-isomorphic pair found in that way must have different rooted contracted components in the mixed data. It requires a polynomial identity between the two sums.
+Theorem~\ref{thm:two-edge} implies that term-by-term isomorphism of two-edge expansions cannot produce a Stanley counterexample, regardless of component types or sizes. If two trees share their all-deleted forest and double contraction, equality of their chromatic symmetric functions is equivalent to equality of the sum of their two mixed chromatic symmetric functions; any non-isomorphic pair must therefore have distinct mixed rooted components and achieve polynomial cancellation between the two sums.
 
 \section{Reconstructing three connected specified edges}
 
-\textbf{Theorem.} Let $S$ be a tree with three specified edges forming a connected subtree. For each edge, either delete it or contract it, adding weights at the endpoints on contraction. For each positive number of contractions, retain the resulting multiset of weighted forests up to isomorphism. These data determine $S$ and its three specified edges up to isomorphism.
+\begin{theorem}\label{thm:three-edge}
+Let $S$ be a finite tree with three specified edges forming a connected subtree. For each specified edge, either delete it or contract it (adding vertex weights on contraction). For each positive number of contractions ($1,2,3$), retain the resulting multiset of vertex-weighted forests up to weight-preserving isomorphism. These data determine $S$ and its set of three specified edges up to isomorphism.
+\end{theorem}
 
-Write a branch bag for the multiset of rooted branches at a vertex. Along the four-vertex specified subtree, use the bag of each vertex after discarding its specified edges. Vertices outside that subtree are unaltered. Thus the fully contracted tree has one vertex of weight four, whose bag $Q$ is the sum of the four original bags. Conversely, a tree producing these data must have its three specified edges connected, since three contractions yielded a vertex of weight four.
+\begin{proof}
+Deleting the three specified edges decomposes $S$ into four rooted pieces, one at each vertex of the four-vertex connected specified subtree $F_0$, with branch bags taken after discarding the specified edges. Contracting all three specified edges yields a single tree with one vertex of weight~$4$, whose branch bag $Q$ is the sum of the four piece bags. (Conversely, any three edges whose triple contraction produces a weight-$4$ vertex must form a connected subtree.)
 
-The specified subtree is a star or a path. Only a path gives a term with two vertices of weight two after contracting two edges and deleting one. For a star, each of the three two-contraction terms has one root of weight three. Subtract its bag from $Q$ to recover the bag at the specified leaf separated by the deletion. This gives all three leaf bags as a multiset, including multiplicity. Subtract their sum from $Q$ to recover the center. These data reconstruct the star of rooted pieces.
+The subtree $F_0$ is either a star $K_{1,3}$ or a path $P_4$. In the two-contraction layer (two contractions and one deletion), a path produces a forest with two weight-$2$ vertices (when the middle edge is deleted), whereas a star produces only forests containing a weight-$3$ vertex. Thus the two-contraction layer determines whether $F_0$ is a star or a path.
 
-For a path, let $A,B,C,D$ be the four rooted pieces in order, using the same letters for their root bags in sums. The two terms with a weight-three root recover $A,D$ as an unordered pair of rooted types by the same subtraction. At one contraction, the term contracting the middle edge has weight-two root bag $Q-A-D=B+C$ and the unrooted versions of $A,D$ as companions. Remove one occurrence of this known term from the multiset. The remaining terms contract a terminal edge and give respectively
+If $F_0$ is a star, each of the three two-contraction forests has a unique weight-$3$ vertex whose root bag equals $Q$ minus the bag of the separated leaf piece. Subtracting each weight-$3$ bag from $Q$ recovers the multiset of the three rooted leaf pieces (with multiplicities), and subtracting their sum from $Q$ recovers the rooted center piece, reconstructing $S$ and $F_0$.
 
+If $F_0$ is a path, let $A,B,C,D$ denote the four rooted pieces in order along the path (and also their root branch bags). The two forests in the two-contraction layer having a weight-$3$ vertex have root bags $Q-A$ and $Q-D$, which recover the unordered pair $\{A,D\}$ of rooted types by subtraction from $Q$. In the one-contraction layer, contracting the middle edge gives weight-$2$ root bag $Q-A-D=B+C$ together with the unrooted companions $\bar A,\bar D$. Because $Q$ and $\{A,D\}$ are already known, remove one occurrence of this known middle-edge forest from the three-element multiset of the one-contraction layer. The two remaining terms correspond to contracting the two terminal edges and are given by
 \[
-(A+B; C,D),\qquad(C+D; A,B),
+(A+B;\, \bar C,\bar D),\qquad (C+D;\, \bar A,\bar B),
 \]
+where the entry before the semicolon is the weight-$2$ root bag and the two entries after it are unrooted companion trees.
 
-where the entries before the divider are marked root bags and the two companions after it are unrooted trees.
+Suppose a second path $A',B',C',D'$ has the same data. Orient it (reversing if necessary) so that its two terminal-contraction terms match the first path in the displayed order. We know $\{A',D'\}=\{A,D\}$. If $A'=A$ and $D'=D$ as rooted types, equality of the marked bags gives $B'=B$ and $C'=C$, so the paths agree.
 
-Suppose two paths have the same data. Orient the second path $A',B',C',D'$ so that its two terminal-contraction terms match the first path in the displayed order. This is possible even if the two terms are equal. If $A'=A$ and $D'=D$ as rooted types, equality of the marked bags immediately gives $B'=B,C'=C$. Otherwise $A'=D,D'=A$, with $A,D$ distinct as rooted types.
+Otherwise $A'=D$ and $D'=A$ with $A\not\cong D$ as rooted types. Consider the two-piece tree $A+_{\mathrm{e}} B$ obtained by joining the roots of $A$ and $B$ by a specified edge, and the corresponding join $A'+_{\mathrm{e}} B'$. They share the same marked contraction $A+B=A'+B'$ (from the first terminal-contraction term) and the same unrooted deletion forest $\{\bar A,\bar B\}=\{\bar A',\bar B'\}$ (from the companions of the second term). By the single-edge reconstruction theorem~\cite{single-edge}, there is an isomorphism $A+_{\mathrm{e}} B\cong A'+_{\mathrm{e}} B'$ carrying the joining edge to its counterpart, so the unordered pairs of rooted sides agree: $\{A,B\}=\{A',B'\}$. Since $A'=D\neq A$, this forces $B=D$ and $B'=A$. Applying the same argument to $C+_{\mathrm{e}} D$ and $C'+_{\mathrm{e}} D'$ forces $C=A$ and $C'=D$. Thus $(A,B,C,D)=(A,D,A,D)$ and $(A',B',C',D')=(D,A,D,A)$ are reversals of one another, giving an isomorphism of the full trees preserving the three specified edges as a set.
+\end{proof}
 
-The two-piece join of $A,B$ across its specified edge and the corresponding join of $A',B'$ have the same marked contraction $A+B=A'+B'$ from the first terminal-contraction term. They have the same unrooted deletion forest from the companions of the second term. The single-edge reconstruction theorem therefore gives equality of the unordered rooted pieces of those joins, since its isomorphism carries the joining edge to its counterpart. Here this implies $B=D$ and $B'=A$. Applying the argument to the other end gives $C=A$ and $C'=D$. The paths are reversals of one another and the full trees are isomorphic, preserving the three specified edges as a set. \href{https://github.com/claude-make-no-mistakes/stanley-tree-counterexample-search/blob/main/ROOT-EXCHANGE.md}{Single-edge reconstruction theorem}
-
-Consequently, a search based on term-by-term isomorphism of three-edge expansions can focus on disconnected sets of specified edges. Polynomial cancellation remains a separate possibility even for connected sets. \href{https://arxiv.org/abs/1910.11859}{Weighted deletion and contraction}
+Hence any search for Stanley counterexamples based on term-by-term isomorphism of three-edge expansions can restrict to disconnected sets of three edges, while polynomial cancellation remains a separate possibility even for connected triples.
 
 \section{Joining copies of a tree at a common attachment point}
 
-Let $T$ be a finite tree. Take one central copy and $k$ outer copies, where $k\geq1$. Join each outer copy to the same vertex of the central copy by one edge, with arbitrary attachment vertices in the outer copies. Mark the vertex obtained by contracting all $k$ joining edges.
+Let $T$ be a finite tree and let $k\ge 1$. Form a tree by taking one central copy of $T$ and $k$ outer copies of $T$, joining each outer copy by a single edge (at an arbitrary vertex of that outer copy) to one fixed vertex of the central copy. Mark the vertex of weight $k+1$ obtained by contracting all $k$ joining edges.
 
-\textbf{Theorem.} If two such trees have isomorphic marked contractions and equal chromatic symmetric functions, they cannot be an order-minimal pair of non-isomorphic trees with equal chromatic symmetric functions.
+\begin{lemma}\label{lem:branch-indep}
+For any finite tree $T$ with $|T|>1$, the branch-bag vectors $B_T(v)$ indexed by distinct automorphism orbits of vertices $v\in V(T)$ are linearly independent over $\mathbb{Q}$.
+\end{lemma}
 
-For a root $v$ of $T$, let $B_T(v)$ be the multiset of rooted branches after removing $v$, expressed as a vector indexed by rooted tree types. For $|T|>1$, the vectors for distinct root orbits of $T$ are linearly independent. To prove this, consider a vertex $v$ outside the centroids, where a centroid is a vertex whose removal leaves no component of order greater than $|T|/2$. The largest branch $U$ at $v$ has order greater than $|T|/2$. Let $D$ be the opposite rooted side of that edge and put $t=|D|$, so $t<|T|/2$.
+\begin{proof}
+Consider a linear dependence $\sum_{\mathcal{O}} c_{\mathcal{O}} B_T(v_{\mathcal{O}}) = 0$ over the vertex orbits $\mathcal{O}$ of $T$. Recall that a centroid of $T$ is a vertex whose removal leaves no component of order greater than $|T|/2$.
 
-The rooted type of $U$ can occur as a branch only at vertices in the orbit of $v$. Indeed, the multiset of all rooted edge sides of order $t$ in $T$ consists of all rooted descendant subtrees of order $t$ of $U$, together with $D$. Cuts inside $D$ leave a proper subset of $D$ on the detached side. Cuts inside $U$ contribute their descendant side if it has order $t$, since their other side contains $D$ and at least one vertex of $U$. Subtracting the contribution determined by $U$ therefore recovers $D$. The root of $D$ gives the rooted type of $T$ at $v$. The coordinate indexed by $U$ now forces the coefficient of $B_T(v)$ in any linear dependence to vanish.
+Let $v\in V(T)$ be a non-centroid vertex. Removing $v$ leaves a unique branch $U$ of order strictly greater than $|T|/2$. Let $D$ be the opposite rooted side of the edge from $v$ to $U$, and set $t := |D| = |T|-|U| < |T|/2$. We claim that $[U]$ appears in $B_T(v')$ only when $v'$ lies in the orbit of $v$. Indeed, suppose $B_T(v')$ contains a copy $U'\cong U$, with opposite rooted side $D'$ of order $t$. In the multiset $M_t(T)$ of all rooted edge-cut sides of order $t$ in $T$, cuts inside $D'$ yield sides of order strictly less than $t$ (on the detached side) or strictly greater than $|U'|>t$ (on the side containing $U'$). Cuts inside $U'$ contribute their away-from-$D'$ descendant subtree whenever its order is $t$, while their other side has order at least $t+1$. The cut between $D'$ and $U'$ contributes $[D']$. Thus
+\[
+[D'] = M_t(T) - \{\text{rooted descendant subtrees of } U' \text{ of order } t\}.
+\]
+Since the right-hand side depends only on $T$ and the rooted type of $U'\cong U$, we obtain $D'\cong D$ as rooted trees. Joining $D'$ and $U'$ recovers $(T,v')\cong (T,v)$, so $v'$ lies in the orbit of $v$. Moreover, $[U]$ occurs with multiplicity~$1$ in $B_T(v)$ because at most one branch can exceed $|T|/2$. Reading the $[U]$-coordinate of the linear dependence therefore forces $c_{\mathrm{orb}(v)}=0$ for every non-centroid orbit.
 
-After removing all noncentroid bags, a unique centroid has a nonempty bag, so its coefficient vanishes. If there are two centroids, they are adjacent and their edge splits $T$ into equal halves. If the rooted halves are isomorphic then the centroids are in the same orbit. Otherwise each centroid bag has a different unique branch of order $|T|/2$, so both remaining coefficients vanish. When $|T|=1$, the joined tree is always the same star.
+Only centroid orbits remain. Every finite tree has either one centroid or two adjacent centroids. If there is a unique centroid $c$, then $B_T(c)\neq 0$ (as $|T|>1$), forcing its coefficient to vanish. If there are two adjacent centroids $c_1,c_2$, their connecting edge splits $T$ into two rooted halves $H_1,H_2$ of order $|T|/2$. If $H_1\cong H_2$, then $c_1$ and $c_2$ lie in the same orbit and its coefficient vanishes. Otherwise $[H_2]$ is the unique order-$(|T|/2)$ branch in $B_T(c_1)$ and $[H_1]$ is the unique order-$(|T|/2)$ branch in $B_T(c_2)$, so both remaining coefficients vanish.
+\end{proof}
 
-The marked contraction has bag equal to the sum of the $k+1$ bags at the attachment vertices. Linear independence therefore recovers the multiset of their root orbits, including multiplicities. If both central copies have the same rooted type, attach the matching outer copies to obtain an isomorphism. Otherwise take, in each tree, the joining edge to an outer copy of the other tree's central rooted type. Contracting just this chosen edge produces isomorphic weighted trees. At their weight-two roots the two chosen bags add, and the remaining attachments agree as multisets.
+\begin{theorem}\label{thm:common-hub}
+Let $S_1$ and $S_2$ be two trees formed by joining $k\ge 1$ outer copies of a finite tree $T$ to one vertex of a central copy of $T$. If $S_1$ and $S_2$ have isomorphic marked contractions (at the vertex obtained by contracting all $k$ joining edges) and equal chromatic symmetric functions, then $(S_1,S_2)$ cannot be an order-minimal pair of non-isomorphic trees with equal chromatic symmetric functions.
+\end{theorem}
 
-If the original chromatic symmetric functions are equal, weighted deletion and contraction now give equal chromatic symmetric functions for the forests obtained by deleting the two chosen edges. Cancel the common chromatic symmetric function of the detached copy of $T$. This leaves two smaller ordinary trees with equal chromatic symmetric functions. In an order-minimal pair, those trees are isomorphic, so the deletion forests are isomorphic as well. Single-edge reconstruction then gives an isomorphism of the original trees. \href{https://arxiv.org/abs/1910.11859}{Weighted deletion and contraction} \href{https://github.com/claude-make-no-mistakes/stanley-tree-counterexample-search/blob/main/ROOT-EXCHANGE.md}{Single-edge reconstruction}
+\begin{proof}
+If $|T|=1$, both $S_1$ and $S_2$ are isomorphic to the star $K_{1,k}$. Assume $|T|>1$ and suppose for contradiction that $(S_1,S_2)$ is an order-minimal Stanley counterexample.
+
+The branch bag at the marked vertex of the full contraction of $S_1$ (resp.\ $S_2$) is the sum of the $k+1$ branch bags $B_T(v)$ at the central and outer attachment vertices. By Lemma~\ref{lem:branch-indep}, isomorphic marked contractions force the multisets of all $k+1$ attachment vertex orbits in $S_1$ and $S_2$ to coincide, including multiplicities.
+
+If the central attachment vertices of $S_1$ and $S_2$ lie in the same orbit of $T$, then the multisets of outer attachment orbits also agree, yielding an isomorphism $S_1\cong S_2$, a contradiction. Otherwise, the central orbit of $S_2$ must appear among the outer attachment orbits of $S_1$, and the central orbit of $S_1$ must appear among the outer attachment orbits of $S_2$. Choose a joining edge $e_1$ in $S_1$ connecting its central copy to an outer copy attached at the central orbit of $S_2$, and choose $e_2$ in $S_2$ symmetrically. Contracting $e_1$ in $S_1$ and $e_2$ in $S_2$ yields isomorphic vertex-weighted trees $S_1/e_1\cong S_2/e_2$: at their unique weight-$2$ roots, the two merged bags sum to the same pair of central bags, and the remaining $k-1$ attached outer copies have identical multisets of attachment orbits.
+
+By weighted deletion--contraction~\cite{crew-spirkl} and $X(S_1)=X(S_2)$, the deletion forests satisfy $X(S_1-e_1)=X(S_2-e_2)$. Each deletion forest is the disjoint union of an isolated copy of $T$ and a smaller ordinary tree of order $k|T|<(k+1)|T|$. Cancelling the nonzero factor $X(T)$ in the integral domain of symmetric functions shows that these two smaller trees have equal chromatic symmetric functions. By order-minimality of $(S_1,S_2)$, they are isomorphic, so $S_1-e_1\cong S_2-e_2$. Together with the marked contraction isomorphism $S_1/e_1\cong S_2/e_2$, the single-edge reconstruction theorem~\cite{single-edge} forces $S_1\cong S_2$, a contradiction.
+\end{proof}
 
 \section{Restrictions on relocating a fixed rooted subtree}
 
-Consider a tree obtained by attaching a fixed nonempty rooted tree $C$ by an edge to a vertex $u$ of a tree $H$. Compare moving that edge from $u$ to $v$, keeping the root in $C$. The $U$-polynomial of an ordinary tree counts its edge subsets by component orders. Equality of these polynomials is equivalent to equality of chromatic symmetric functions. Use the same definition for vertex-weighted trees, with the total weight replacing the order in every component. For a rooted tree $T$, $R_T(z)$ is the version that uses $z^i$ for its root component of weight $i$. Write $L(z^i)=x_i$ for the linear operation giving that component its usual variable. \href{https://arxiv.org/abs/1910.11859}{Weighted deletion and contraction}
+Let $H$ be a finite tree, let $u,v\in V(H)$ be distinct vertices, and let $C$ be a nonempty rooted tree. Compare the tree $S_u$ obtained by joining the root of $C$ to $u$ by an edge with the relocated tree $S_v$ obtained by moving that edge from $u$ to $v$ (keeping the root of $C$ fixed).
+
+For an ordinary or vertex-weighted tree $G$, its $U$-polynomial~\cite{noble-welsh} is
+\[
+U(G) = \sum_{F\subseteq E(G)} \prod_{K\in\pi_0(G|_F)} x_{w(K)} \in \mathbb{Z}[x_1,x_2,\ldots],
+\]
+where $w(K)$ is the total vertex weight of component $K$. For trees, equality of $U$-polynomials is equivalent to equality of chromatic symmetric functions~\cite{crew-spirkl}. For a rooted tree $T$, let $R_T(z)\in\mathbb{Z}[x_1,x_2,\ldots][z]$ be the generating polynomial using $z^i$ for the root component of weight~$i$ and $x_j$ for each non-root component of weight~$j$. Write $L\colon \mathbb{Z}[x_1,x_2,\ldots][z]\to\mathbb{Z}[x_1,x_2,\ldots]$ for the $\mathbb{Z}[x_1,x_2,\ldots]$-linear map sending $z^i\mapsto x_i$, so $L(R_T(z))=U(T)$, and put $W(P,C):=L(R_P(z)R_C(z))$ for the $U$-polynomial of the weighted contraction obtained by identifying the roots of $P$ and $C$.
 
 \subsection{An adjacent slide cannot give a smallest counterexample}
 
-Suppose $uv$ is an edge of $H$ and let $A,B$ be the two sides of that edge, rooted at $u,v$. Write $W(P,C)=L(R_P(z)R_C(z))$. The polynomial $W(P,C)$ counts the weighted contraction of the edge joining the two roots. The difference of the original and relocated tree polynomials is
+\begin{proposition}\label{prop:adj-slide}
+If $uv\in E(H)$, then $(S_u,S_v)$ cannot be an order-minimal counterexample to Stanley's tree conjecture.
+\end{proposition}
 
+\begin{proof}
+Let $A$ and $B$ be the two components of $H-uv$, rooted at $u$ and $v$ respectively. In $U(S_u)-U(S_v)$, edge subsets deleting the graft edge contribute $U(H)U(C)$ to both trees, and subsets retaining both $uv$ and the graft edge contribute $L(R_A(z)R_B(z)R_C(z))$ to both. The remaining subsets cut $uv$ and retain the graft edge, giving
 \[
-U(B)W(A,C)-U(A)W(B,C).
+U(S_u) - U(S_v) = U(B)W(A,C) - U(A)W(B,C).
 \]
+For any vertex-weighted tree $G$ of total weight $w$, $U(G) = x_w + f(x_1,\ldots,x_{w-1})$ is homogeneous of weighted degree~$w$ (with $\deg x_i = i$) and prime in the unique factorization domain $\mathbb{Z}[x_1,x_2,\ldots]$, since quotienting by $(U(G))$ eliminates $x_w$ and leaves a polynomial ring. If $U(S_u)=U(S_v)$, then the prime $U(B)$ must equal $\pm U(A)$ or $\pm W(B,C)$. Since $\deg W(B,C) = |B|+|C| > |B|$ and every leading coefficient is~$+1$, this forces $U(A)=U(B)$ and $W(A,C)=W(B,C)$.
 
-Indeed, terms cutting the graft edge agree, as do the terms retaining both of the two edges in question. The terms cutting $uv$ and retaining the graft give precisely the displayed difference.
-
-Each weighted tree polynomial of total weight $w$ has the form $x_w+f(x_1,\ldots,x_{w-1})$. It is prime in $\mathbb Z[x_1,x_2,\ldots]$, since quotienting by this monic linear polynomial just eliminates $x_w$. It is homogeneous of degree $w$ with $\deg(x_i)=i$. If the displayed difference vanishes, the prime $U(B)$ must equal either $U(A)$ or $W(B,C)$ up to a unit. The latter weights differ by the positive order of $C$, and the coefficient of each leading variable is one. Hence $U(A)=U(B)$ and $W(A,C)=W(B,C)$.
-
-In an order-minimal Stanley counterexample, the smaller trees $A,B$ with equal $U$ must be isomorphic. Joining $C$ to each of their marked roots gives two more smaller trees with equal $U$, since their deletion products agree and their weighted contractions agree. They too are isomorphic. Apply Krasikov's branch interchange theorem on the common unrooted type of $A,B$. The two grafts compared there are a dummy root with $C$ attached by an edge and a single rooted vertex, with the two attachment positions switched. Since the attached trees are isomorphic, the two positions in the common unrooted tree lie in the same orbit. Thus the original sides are isomorphic at their marked roots. Swapping the sides now takes the full original tree to its relocated counterpart. This contradicts minimality. \href{https://ajc.maths.uq.edu.au/pdf/60/ajc_v60_p169.pdf}{Krasikov's theorem, restated as Theorem 2.2 by Asciak et al.}
+Suppose $(S_u,S_v)$ is an order-minimal counterexample. Because $|A|=|B|<|S_u|$ and $U(A)=U(B)$, minimality gives $A\cong B$ as unrooted trees. Moreover, the smaller ordinary trees $A+_{\mathrm{e}} C$ and $B+_{\mathrm{e}} C$ (of order $|A|+|C|<|S_u|$) have equal $U$-polynomials $U(A)U(C)+W(A,C)=U(B)U(C)+W(B,C)$, so minimality gives $A+_{\mathrm{e}} C\cong B+_{\mathrm{e}} C$. Applying Krasikov's branch interchange theorem~\cite{krasikov} on the common unrooted type of $A$ and $B$—interchanging a root with $C$ attached by an edge against a single root vertex at the attachment positions $u$ and $v$—implies that $u$ and $v$ lie in the same orbit of $A\cong B$. Hence $(A,u)\cong (B,v)$ as rooted trees. Swapping $(A,u)$ and $(B,v)$ across $uv$ while fixing $C$ gives an isomorphism $S_u\cong S_v$, contradicting minimality.
+\end{proof}
 
 \subsection{A distant slide must have symmetric piece orders}
 
-Let $m=|H|$, $c=|C|$ and let $S$ be the set of orders on the $u$ side of successive path-edge cuts from $u$ to $v$. The orders strictly increase. Only these cuts change the two-component terms of $U$. Put $f(s)=x_s x_{m+c-s}$. The difference at that layer is $\sum_{s\in S}(f(m-s)-f(s))$.
+\begin{proposition}\label{prop:distant-slide}
+Let $m=|H|$ and $c=|C|$. If $U(S_u)=U(S_v)$, then the orders of the rooted off-path pieces along the path from $u$ to $v$ in $H$ form a palindrome, and the two endpoint pieces have equal ordinary $U$-polynomials. In an order-minimal counterexample, the two endpoint pieces are isomorphic as unrooted trees.
+\end{proposition}
 
-Let $g(s)=1_{s\in S}-1_{m-s\in S}$ for integer $s$. The equality of this layer is equivalent to $g(s)+g(m+c-s)=0$ on distinct complementary indices, and to $g(s)=0$ at the midpoint. Extend $g$ by zero outside its support. Since $g(m-s)=-g(s)$, these identities give $g(s)=g(s-c)$ for all integers $s$. A finitely supported function cannot have nonzero period $c$. Thus $S$ is symmetric under $s\mapsto m-s$, and consecutive differences of the side orders show that the orders of the rooted off-path pieces form a palindrome.
+\begin{proof}
+Let $S\subset\{1,\ldots,m-1\}$ be the strictly increasing set of orders of the $u$-side components obtained by deleting each edge of the path from $u$ to $v$ in $H$. In the two-component terms of $U(S_u)-U(S_v)$, cuts at the graft edge, inside $C$, or off the $u$--$v$ path cancel. Putting $f(s) := x_s x_{m+c-s}$, the two-component difference is $\sum_{s\in S}(f(m-s)-f(s))$.
 
-One can also telescope the adjacent-slide formula along the path. For $s_0=\min S$, the largest variable index of any summand is $m+c-s_0$. It occurs in the contracted weighted factors at the two extreme cuts, since $\max S=m-s_0$. Each is linear in that variable with coefficient one. The coefficient in their difference is the difference of the ordinary $U$-polynomials of the two endpoint pieces of $H$ after removing all path edges. Thus equality of the full polynomials forces these two endpoint pieces to have equal $U$. In an order-minimal collision they must be isomorphic as unrooted trees.
+Define $g(s) := 1_{s\in S} - 1_{m-s\in S}$ for all $s\in\mathbb{Z}$. Vanishing of the two-component layer is equivalent to $g(s)+g(m+c-s)=0$ for all $s\in\mathbb{Z}$ (including any integral midpoint $s=(m+c)/2$, where $2g(s)=0$). Combined with $g(m-s)=-g(s)$, this yields $g(s)=g(s-c)$ for all $s\in\mathbb{Z}$. Because $g$ is finitely supported and $c\ge 1$, we must have $g\equiv 0$. Thus $S$ is invariant under $s\mapsto m-s$, and consecutive differences of its ordered elements show that the off-path piece orders form a palindrome.
+
+Next, telescope the adjacent-slide difference of Proposition~\ref{prop:adj-slide} along the edges of the $u$--$v$ path:
+\[
+U(S_u) - U(S_v) = \sum_{i=0}^{d-1} \bigl(U(R_i)W(L_i,C) - U(L_i)W(R_i,C)\bigr),
+\]
+where $L_i,R_i$ are the $u$-side and $v$-side components of the $i$-th path edge. Putting $s_0 := \min S$, symmetry gives $\max S = m-s_0$. The largest variable index occurring in any summand is $m+c-s_0$, appearing linearly with coefficient~$1$ in $W(L_{d-1},C)$ (multiplied by $+U(R_{d-1})$) and in $W(R_0,C)$ (multiplied by $-U(L_0)$), while every other factor involves only variables of strictly smaller index. Thus the coefficient of $x_{m+c-s_0}$ in $U(S_u)-U(S_v)$ is $U(R_{d-1})-U(L_0)$. Equality $U(S_u)=U(S_v)$ forces $U(L_0)=U(R_{d-1})$, and in an order-minimal counterexample the smaller endpoint pieces $L_0$ and $R_{d-1}$ must be isomorphic as unrooted trees.
+\end{proof}
 
 \subsection{A distance-two slide requires a middle piece and graft of order at least six}
 
-For a rooted tree $D$, let $P_D(z)$ count connected vertex subsets containing the root by order. The recurrence is $P_D(z)=z\prod_E(1+P_E(z))$, where $E$ ranges over its rooted branches. In any slide with equal $U$, the attachment vertices $u,v$ of $H$ must have equal rooted profiles. The terms cutting the graft edge agree in the two trees. Among the remaining terms with exactly one nonsingleton component, that component contains the graft edge. The two generating functions for its orders are therefore $P_{H,u}P_C$ and $P_{H,v}P_C$. Cancel $P_C$.
+For a rooted tree $D$, let $P_D(z) = \sum_{j\ge 1} p_j z^j$ count connected vertex subsets containing the root by order; it satisfies the recurrence $P_D(z)=z\prod_E (1+P_E(z))$ over the rooted branches $E$ at the root.
 
-Suppose the path has two edges, and let $A,J,B$ be the three rooted off-path pieces in order. The equality of the two profiles on $H$ gives $(P_A-P_B)(1+P_J)=0$, so $P_A=P_B$. Write $a=|A|=|B|$, $b=|J|$, $c=|C|$. In a smallest collision $A$ and $B$ have the same ordinary $U$-polynomial $F$ and the same unrooted type. If the roots are equivalent, reversal is already an isomorphism of the full trees. Since every degree class in every tree of order at most four is a single vertex orbit, equality of the root degrees forces $a\geq5$ in a non-isomorphic pair.
+\begin{proposition}\label{prop:dist2-six}
+Suppose the path from $u$ to $v$ in $H$ has length~$2$, with rooted off-path pieces $A,J,B$ in order along the path. If $(S_u,S_v)$ is an order-minimal counterexample to Stanley's tree conjecture, then $P_A(z)=P_B(z)$, $|A|=|B|\ge 5$, $|J|\ge 6$, and $|C|\ge 6$.
+\end{proposition}
 
-Put $p=R_A$, $q=R_B$, $r=R_J$ and $s=R_C$. Separating the terms retaining the graft by which of the two path edges they retain gives the difference
+\begin{proof}
+In any slide with $U(S_u)=U(S_v)$, consider the monomials $x_j x_1^{m+c-j}$ ($j\ge 2$), corresponding to edge subsets with a single non-singleton component. Terms cutting the graft edge agree in $S_u$ and $S_v$. Terms retaining the graft edge have their unique non-singleton component containing the graft edge, so their generating function in $z^j$ is $P_{H,u}(z)P_C(z)$ in $S_u$ and $P_{H,v}(z)P_C(z)$ in $S_v$. Cancelling the nonzero factor $P_C(z)$ gives $P_{H,u}(z)=P_{H,v}(z)$.
 
-\[
-F L\bigl[s(U(J)+r)(p-q)\bigr]+L(rq)L(sp)-L(rp)L(sq).
-\]
+For a length-$2$ path with off-path pieces $A,J,B$, we have $P_{H,u} = P_A(1+P_J(1+P_B))$ and $P_{H,v} = P_B(1+P_J(1+P_A))$, so $P_{H,u}-P_{H,v} = (P_A-P_B)(1+P_J) = 0$, which forces $P_A=P_B$. By Proposition~\ref{prop:distant-slide}, $a := |A|=|B|$, $U(A)=U(B)=:F$, and $A\cong B$ as unrooted trees. Moreover $(A,u)\not\cong (B,v)$ as rooted trees, for otherwise reversing the path would give $S_u\cong S_v$. Because the coefficient of $z^2$ in $P_A$ is the root degree, $u$ and $v$ have the same degree in $A\cong B$. In every tree of order at most~$4$, each degree class is a single vertex orbit, so $a\ge 5$.
 
-If $J$ and $C$ have the same rooted type, the last two terms cancel. The factor $s(U(J)+r)$ is the rooted polynomial for the tree obtained by joining $C$ and $J$ at their roots, rooted on the $C$ side. The displayed identity then gives identical weighted contractions on joining that tree to $A$ or $B$. The deletion products already agree, so the two joins have equal ordinary $U$. They are smaller than the original pair and hence are isomorphic. Krasikov's theorem as in the adjacent case identifies the attachment roots in $A,B$, which gives a contradiction.
+Put $b := |J|$, $c := |C|$, $p := R_A$, $q := R_B$, $r := R_J$, and $s := R_C$. In $U(S_u)-U(S_v)$, terms cutting the graft edge cancel, and terms retaining the graft edge together with both path edges also cancel. Separating the remaining terms by which of the two path edges are retained gives
+\begin{equation}\label{eq:dist2}
+U(S_u) - U(S_v) = F L\bigl[s(U(J)+r)(p-q)\bigr] + L(rq)L(sp) - L(rp)L(sq) = 0.
+\end{equation}
 
-Otherwise take the identity modulo the prime $F$. This eliminates $x_a$. Each remaining factor still has a leading variable of index $a+b$ or $a+c$ with coefficient one, so each is prime in the quotient polynomial ring. Matching factors after reduction gives one of two cases. The straight matching pairs contractions having the same graft, and is forced when $b\ne c$ by their distinct weighted degrees. The crossed matching can occur only when $b=c$.
+If $J\cong C$ as rooted trees, then $r=s$, so the last two terms cancel and $L[s(U(J)+r)p] = L[s(U(J)+r)q]$. The factor $s(U(J)+r)$ is the rooted polynomial $R_M(z)$ of the tree $M$ formed by joining the roots of $C$ and $J$ by an edge, rooted on the $C$ side. Hence the smaller ordinary trees $A+_{\mathrm{e}} M$ and $B+_{\mathrm{e}} M$ (of order $a+b+c < 2a+b+c$) have equal deletion products $F U(M)$ and equal weighted contractions, so they have equal $U$-polynomials. Minimality forces $A+_{\mathrm{e}} M\cong B+_{\mathrm{e}} M$, and Krasikov's theorem~\cite{krasikov} identifies $(A,u)\cong (B,v)$, a contradiction.
 
-In the straight case, suppose one graft has order $h\leq5$ and rooted polynomial $w$. Then $L(wp)-L(wq)=FK$ for a homogeneous polynomial $K$ of weighted degree $h$. Set every $x_i$ to the same indeterminate $t$. On a weighted tree with $e$ edges this gives $t(1+t)^e$, by counting retained edges. Consequently $K$ specializes to zero. In particular its $x_1^h$ coefficient is zero. Since $P_A=P_B$, the difference $L(wp)-L(wq)$ has no monomial $x_j x_1^{a+h-j}$ with $j\geq2$. Its coefficient in $FK$ is exactly the coefficient of $x_j x_1^{h-j}$ in $K$ for $2\leq j\leq h$, because the all-singleton term of $F$ has coefficient one and the all-singleton term of $K$ is absent. These coefficients of $K$ are thus zero. For $h\leq5$, after removing these monomials and $x_1^h$, the remaining partitions of $h$ have distinct lengths. The zero specialization then gives $K=0$. The two smaller joins with the graft $w$ have equal ordinary $U$, and minimality and Krasikov again identify the attachment roots.
+Thus $J\not\cong C$ as rooted trees. Reduce~\eqref{eq:dist2} modulo the prime $F = x_a + f(x_1,\ldots,x_{a-1})$. The quotient ring $\mathbb{Z}[x_1,x_2,\ldots]/(F)$ is again a polynomial ring (eliminating $x_a$) and retains the weighted grading. Because $b,c\ge 1$, the four factors $L(rq),L(rp)$ (of leading variable $x_{a+b}$) and $L(sp),L(sq)$ (of leading variable $x_{a+c}$) remain monic linear in their highest-index variables modulo~$F$ and are therefore prime elements of the quotient ring. Unique factorization and matching leading coefficients $+1$ leave two possibilities:
 
-In the crossed case of common order $h=b=c\leq5$, one matched pair gives $L(rp)-L(sp)=FK$, with $K$ homogeneous of weight $h$. Its all-$t$ specialization again vanishes. In particular it has zero coefficients at $x_1^h$ and $x_h$, which are alone in their respective lengths. The coefficients of $x_j x_1^{a+h-j}$ on the left count the rooted-profile difference $P_A(P_J-P_C)$ by order. For $j\geq h$ the corresponding coefficients on the right vanish. Thus $P_A(P_J-P_C)$ has degree at most $h-1$. If $P_J-P_C$ were nonzero, it would have degree at least two, since both profiles start with $z$. With $\deg P_A=a\geq5$, this is impossible. The recurrence for $P$ distinguishes all rooted trees of each order through five, as checked in \href{https://github.com/claude-make-no-mistakes/stanley-tree-counterexample-search/blob/main/check_rooted_profiles.py}{the profile replay}. Hence $J$ and $C$ have the same rooted type, a case already excluded.
+\medskip
+\noindent\emph{Straight matching:} $F\mid (L(rp)-L(rq))$ and $F\mid (L(sp)-L(sq))$ (forced whenever $b\neq c$). Suppose one of $b,c$ is at most~$5$, say $h\in\{b,c\}$ with $h\le 5$ and corresponding rooted polynomial $w\in\{r,s\}$ of tree $G\in\{J,C\}$. Then $L(wp)-L(wq)=FK$ for a polynomial $K\in\mathbb{Z}[x_1,\ldots,x_h]$ homogeneous of weighted degree~$h$. Setting every $x_i\mapsto t$ evaluates any weighted tree with $e$ edges to $t(1+t)^e$. Since $L(wp)$ and $L(wq)$ both have $a+h-2$ edges, $K(t,\ldots,t)=0$, so the sum of coefficients of $K$ over partitions of $h$ of each fixed length vanishes. In particular, the $x_1^h$-coefficient of $K$ is zero.
+
+In $L(wp)=U(A\vee G)$, the merged root has weight~$2$, so the root component always has weight at least~$2$ and is therefore the unique non-singleton component in every term $x_j x_1^{a+h-j}$ ($j\ge 2$). Thus the coefficient of $x_j x_1^{a+h-j}$ in $L(wp)-L(wq)$ equals $[z^j]\bigl(P_G(z)(P_A(z)-P_B(z))\bigr)=0$. For $2\le j\le h$, the only ways to factor $x_j x_1^{a+h-j}$ across $F\cdot K$ are $(x_1^a)(x_j x_1^{h-j})$ and $(x_j x_1^{a-j})(x_1^h)$. Since $F$ has $x_1^a$-coefficient~$1$ and $K$ has $x_1^h$-coefficient~$0$, the coefficient of $x_j x_1^{h-j}$ in $K$ is zero for every $2\le j\le h$. For $h\le 5$, after eliminating $x_1^h$ and all hook monomials $x_j x_1^{h-j}$ ($2\le j\le h$), the remaining partitions of $h$ have pairwise distinct lengths (none for $h\le 3$; $(2,2)$ for $h=4$; $(3,2)$ and $(2,2,1)$ for $h=5$). The vanishing length sums then force $K=0$, so $L(wp)=L(wq)$. Hence the smaller trees $A+_{\mathrm{e}} G$ and $B+_{\mathrm{e}} G$ have equal $U$-polynomials, and minimality plus Krasikov's theorem again contradict $(A,u)\not\cong (B,v)$.
+
+\medskip
+\noindent\emph{Crossed matching:} $b=c=:h$, with $F\mid (L(rp)-L(sp))$ and $F\mid (L(rq)-L(sq))$. Because $J\not\cong C$ as rooted trees, $h\ge 3$. Assume $h\le 5$, and write $L(rp)-L(sp)=FK$ with $K$ homogeneous of weighted degree~$h$. Specializing $x_i\mapsto t$ again yields $K(t,\ldots,t)=0$, so the coefficients of $x_1^h$ and $x_h$ in $K$ both vanish (each being the unique partition of its length). For any $j\ge h$ (note $j\ge 3$), factoring $x_j x_1^{a+h-j}$ across $F\cdot K$ requires either $x_1^h$ from $K$ or (when $j=h$) $x_h$ from $K$, so the coefficient of $x_j x_1^{a+h-j}$ in $FK$ vanishes. Meanwhile, on the left-hand side this coefficient equals $[z^j]\bigl(P_A(z)(P_J(z)-P_C(z))\bigr)$. Hence $\deg\bigl(P_A(P_J-P_C)\bigr)\le h-1\le 4$. Because $\deg P_A = a \ge 5$ and any nonzero difference $P_J-P_C$ has degree at least~$2$ (both profiles begin with $z$), this forces $P_J=P_C$. However, $P$ distinguishes all rooted trees of each order through~$6$ (in particular through~$5$), as verified directly by \texttt{check\_rooted\_profiles.py}~\cite{repo}. Thus $J\cong C$ as rooted trees, contradicting $J\not\cong C$.
+\end{proof}
 
 \subsection{Detached orders give a second endpoint test}
 
-For the two endpoint pieces of order $a$, let $d_t$ be the difference of the numbers of internal edges whose deletion detaches $t$ vertices from the endpoint root. Extend $d_t$ by zero outside $1,\ldots,a-1$. The equal ordinary endpoint polynomials imply $d_t+d_{a-t}=0$ from their two-component terms. Put $Q_k=\sum_t d_t x_t x_{a+k-t}$, where the sum uses only $1\leq t<a$. In particular $Q_0=0$.
+\begin{theorem}\label{thm:dist2-bound}
+In an order-minimal counterexample to Stanley's tree conjecture formed by a distance-two slide with off-path pieces $A,J,B$ and graft $C$, the rooted endpoint pieces $A$ and $B$ have identical detached-order multisets. Together with Proposition~\ref{prop:dist2-six} and exhaustive enumeration through order~$14$, any such counterexample has at least $40$ vertices.
+\end{theorem}
 
-In the three-component terms of the slide difference, an edge cut in the graft attachment or two cuts off the path give equal contributions. Cutting both path edges also gives equal contributions since both endpoint orders are $a$. Pairing the two choices of path cut cancels the contributions from a cut inside $J$ or $C$. A cut in $A$ detaching order $t$ contributes
-
+\begin{proof}
+For $1\le t\le a-1$, let $d_t$ be the number of internal edges of $A$ whose deletion detaches $t$ vertices from the root $u$, minus the corresponding count for $(B,v)$; extend $d_t := 0$ for all $t\in\mathbb{Z}\setminus\{1,\ldots,a-1\}$. Because $U(A)=U(B)$, comparing the two-component terms gives $d_t+d_{a-t}=0$ for all $t\in\mathbb{Z}$. For any integer $k\ge 0$, define
 \[
-x_t(x_{a+c-t}x_{a+b}-x_{a-t}x_{a+b+c})
- +x_t(x_{a+b+c-t}x_a-x_{a+b-t}x_{a+c}).
+Q_k := \sum_{t=1}^{a-1} d_t\, x_t x_{a+k-t}.
+\]
+In particular, $Q_0 = 0$ by $d_t+d_{a-t}=0$.
+
+Consider the three-component terms of $U(S_u)-U(S_v)$, obtained by deleting two edges. Pairs including the graft edge cancel, pairs of internal edges off the path cancel, and deleting both path edges leaves $\{a+c,b,a\}$ in both trees and cancels. For a pair consisting of one path edge and one internal edge inside $J$ or $C$, summing over the two choices of path edge gives identical contributions in $S_u$ and $S_v$ and cancels. Finally, an internal edge of $A$ detaching $t$ vertices from $u$, paired with each of the two path edges, contributes
+\[
+x_t(x_{a+c-t}x_{a+b} - x_{a-t}x_{a+b+c}) + x_t(x_{a+b+c-t}x_a - x_{a+b-t}x_{a+c}),
+\]
+and an internal edge of $B$ detaching $t$ vertices from $v$ contributes the opposite. Summing over $t$ and using $Q_0=0$, vanishing of the three-component layer becomes
+\[
+x_{a+b}Q_c + x_a Q_{b+c} - x_{a+c}Q_b = 0.
 \]
 
-A cut with that detached order in $B$ contributes the opposite. Hence equality requires $x_{a+b}Q_c+x_aQ_{b+c}-x_{a+c}Q_b=0$. If $b=c$, this gives $Q_{2b}=0$. If $b\ne c$, every surviving monomial of $Q_c$ must contain $x_a$ or $x_{a+c}$, since $x_{a+b}$ is distinct from both. The indices in $Q_c$ are less than $a+c$, and its first index $t$ is less than $a$. Thus $Q_c$ is a multiple of $x_a x_c$. At all $x_i=1$ its value is $\sum_t d_t=0$, so $Q_c=0$.
+If $b=c$, this simplifies to $x_a Q_{2b}=0$, hence $Q_{2b}=0$. If $b\neq c$, then $x_{a+b}$ is distinct from both $x_a$ and $x_{a+c}$, so every surviving monomial of $Q_c$ must be divisible by $x_a$ or $x_{a+c}$. In $Q_c=\sum_{t=1}^{a-1} d_t x_t x_{a+c-t}$, every variable index is strictly less than $a+c$, and the first index satisfies $t<a$; hence $x_a$ can appear only at $t=c$, making $Q_c$ a scalar multiple of $x_a x_c$. Evaluating at $x_i=1$ gives $\sum_{t=1}^{a-1} d_t = 0$, so $Q_c=0$.
 
-For positive $k$, the equality $Q_k=0$ implies $d_t+d_{a+k-t}=0$, including an integral midpoint by comparing coefficients. Along with $d_t=-d_{a-t}$ this makes $d$ periodic with period $k$. Its finite support gives $d=0$. Thus the endpoint pieces have identical detached-order multisets.
+Thus $Q_k=0$ for some integer $k>0$ (namely $k=2b$ or $k=c$). Because $d_t=0$ outside $\{1,\ldots,a-1\}$, comparing coefficients of $x_t x_{a+k-t}$ (including any integral midpoint $t=(a+k)/2$) yields $d_t+d_{a+k-t}=0$ for all $t\in\mathbb{Z}$. Combining this with $d_t+d_{a-t}=0$ gives $d_{r+k}=d_r$ for all $r\in\mathbb{Z}$. Since $d$ has finite support and $k>0$, we conclude $d\equiv 0$, so $(A,u)$ and $(B,v)$ have identical detached-order multisets.
 
-The profile replay finds that no tree of order at most thirteen has distinct root orbits with both the same $P$ and the same detached-order multiset. It finds one repeated pair at order fourteen. Together with $b,c\geq6$, this gives a computer-assisted bound of $2\cdot14+6+6=40$ on a smallest Stanley collision obtained by a distance-two slide. \href{https://github.com/claude-make-no-mistakes/stanley-tree-counterexample-search/blob/main/rooted-profiles.jsonl}{Replay log}
+Exhaustive enumeration of all unlabeled trees through order~$14$ (\texttt{check\_rooted\_profiles.py}~\cite{repo}) confirms that no tree of order at most~$13$ contains two distinct vertex orbits sharing both their connected-subtree profile $P$ and their detached-order multiset, while order~$14$ contains exactly one such pair (on the tree with graph6 code \texttt{MpCS?D??G?\_@?GO??}). Thus $a\ge 14$. Combined with $b,c\ge 6$ from Proposition~\ref{prop:dist2-six}, the total order satisfies $2a+b+c \ge 2\cdot 14 + 6 + 6 = 40$.
+\end{proof}
 
 \section{Finite searches}
 
-Direct graph deletion and weighted contraction checked the reconstruction data for 16,440 edge pairs and 8,519 connected triples from the 434 unlabeled trees of orders 3 through 11.
+All verification and search scripts, replay commands, and exact output logs are archived in the accompanying repository~\cite{repo}.
 
-The three-copy search compared different joins having the same fully contracted weighted tree and the same all-deleted forest. For component orders 2 through 12 it found 313,000 such pairs. Exactly 2,917 agreed through the three-component terms of $U$. The five-component test rejected every pair.
+\begin{enumerate}
+\item \emph{Direct verification of Theorems~\ref{thm:two-edge} and~\ref{thm:three-edge}.} Direct graph deletion and weighted contraction verified the reconstruction data on all $16{,}440$ edge pairs and $8{,}519$ connected edge triples across the $434$ unlabeled trees of orders $3$ through~$11$, with zero collisions.
 
-A separate search joined equal-order components by a single edge. The deletion forest is fixed for each component pair, so equality would require equal $U$-polynomials of the weighted contractions. The search first compared degree counts and all one-cut terms, then compared two evaluations of the weighted contraction polynomial over distinct prime fields. Equal polynomials give equal evaluations. Among 11,916,567 joins inside the sampled component pools, 1,671,767 repeated the first comparison signature. None also repeated both polynomial evaluations within its component pair. Each of the seven orders from 12 through 18 used a pool of 200 unlabeled components.
+\item \emph{Mixed-term cancellation in three equal copies.} For component orders $2$ through~$12$, we enumerated all pairs of non-isomorphic joins of three copies of a tree sharing both their all-deleted forest and their double-contracted weighted tree. Among $313{,}000$ such structural pairs, $2{,}917$ agreed through the three-component terms of $U$, and none agreed through five components.
 
-Source code, replay commands and exact output logs are available in the \href{https://github.com/claude-make-no-mistakes/stanley-tree-counterexample-search}{research repository}.
+\item \emph{Balanced single-edge joins via modular polynomial evaluation.} For each component order from $12$ through~$18$, we sampled a pool of $200$ unlabeled trees and compared balanced joins of pairs from the pool. Because the deletion forest is fixed for each component pair, a collision requires equal $U$-polynomials of the weighted contractions. We filtered by degree multiset and one-cut sizes, then compared two evaluations of the weighted-contraction $U$-polynomial over the prime fields $\mathbb{F}_{10^9+7}$ and $\mathbb{F}_{10^9+9}$. Among $11{,}916{,}567$ joins, $1{,}671{,}767$ repeated the degree and one-cut signature, and none also repeated both modular polynomial evaluations within its component pair.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{crew-spirkl}
+L.~Crew and S.~Spirkl,
+\emph{A deletion--contraction relation for the chromatic symmetric function},
+European J.\ Combin.\ \textbf{89} (2020), 103143,
+\href{https://arxiv.org/abs/1910.11859}{arXiv:1910.11859}.
+
+\bibitem{krasikov}
+I.~Krasikov,
+\emph{Interchanging branches and similarity in a tree},
+Graphs Combin.\ \textbf{4} (1988), 257--258,
+\href{https://doi.org/10.1007/BF01788141}{doi:10.1007/BF01788141}.
+
+\bibitem{noble-welsh}
+S.~D.~Noble and D.~J.~A.~Welsh,
+\emph{A weighted graph polynomial from chromatic invariants of knots},
+Ann.\ Inst.\ Fourier (Grenoble) \textbf{49} (1999), no.~3, 1057--1087.
+
+\bibitem{stanley1995}
+R.~P.~Stanley,
+\emph{A symmetric function generalization of the chromatic polynomial of a graph},
+Adv.\ Math.\ \textbf{111} (1995), no.~1, 166--194.
+
+\bibitem{single-edge}
+\emph{Reconstructing a tree from a single edge deletion and marked contraction},
+companion paper (\texttt{edge-reconstruction.pdf}) in~\cite{repo}.
+
+\bibitem{repo}
+Verification scripts and exact logs,
+\href{https://github.com/claude-make-no-mistakes/stanley-tree-counterexample-search}{github.com/claude-make-no-mistakes/stanley-tree-counterexample-search}.
+\end{thebibliography}
+
 \end{document}
